@@ -1,15 +1,17 @@
 # Contrato da API
 
 Método | Rota | Acesso | Obs
--|-|-|-|
-GET | /categorias | públlico | 200 OK; 204 sem conteúdo
-GET | /produtos | público |  200 OK; 204 sem contúdo
-GET | /produtos/{id} | público | 200 OK; 204 sem contúdo
-POST | /autenticacao/cadastro | público | 201 criado; 409 conflito
-POST | /autenticacao/login | público | 200 OK; 400 credenciais erradas
-POST | /endereco | privado | 201 criado; 400 erro
-POST | /pedidos | privado | 201 criado; 400 erro
-GET | /pedidos | privado | 200 OK; 204  sem conteúdo
+-|-|-|-
+GET | `/categorias` | público | 200 OK
+GET | `/produtos` | público |  200 OK; filtros `?categoriaId=X&page=Y&size=Z`
+GET | `/produtos/{id}` | público | 200 OK; 404 não encontrado
+POST | `/autenticacao/cadastro` | público | 201 criado; 400 dados inválidos; 409 conflito
+POST | `/autenticacao/login` | público | 200 OK; 401 credenciais inválidas
+POST | `/enderecos` | privado | 201 criado; 400 dados inválidos
+GET | `/enderecos` | privado | 200 OK
+POST | `/pedidos` | privado | 201 criado; 400 dados inválidos
+GET | `/pedidos` | privado | 200 OK
+GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
 
 ## Templates request e response
 
