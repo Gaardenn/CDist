@@ -57,6 +57,14 @@ public class UsuarioControllerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    @Test
+    public void postUsuario_quandoUsuarioTemNomeMaiorQueCinquentaCaracteres_recebeBADREQUEST() {
+        Usuario usuario = criarUsuarioValido();
+        usuario.setNome("Teste Teste Teste Teste Teste Teste Teste Teste Tes");
+        ResponseEntity<Object> resposta = testRestTemplate.postForEntity(API_USUARIO, usuario, Object.class);
+        assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
     private Usuario criarUsuarioValido() {
         return Usuario.builder().nome("testeUsuario").email("teste@teste.com").senha("Teste1235").build();
     }
