@@ -8,3 +8,10 @@
 - Uso do Lombok para reduzir código repetitivo (getters, setters e construtores).
 - Banco de dados H2 em memória, por dispensar instalação e configuração adicionais durante o desenvolvimento.
 - Título do Pull Request seguindo padrão de commits `tipo: descrição` (feat, fix, docs, test, chore, refactor).
+
+## Definition of Done
+Uma tarefa só vai para "Feito" no Kanban quando:
+1. Compila e os testes passam (CI verde)
+2. Testado manualmente no Postman (caminho feliz + 1 erro esperado)
+3. PR aprovado pelo colega
+4. Endpoint documentado em docs/02-apli.md (rota, exemplo de request e response)
