@@ -56,7 +56,7 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler({AuthenticationException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ApiError handlerValidationException(AuthenticationException exception, HttpServletRequest request) {
-        return new ApiError(HttpStatus.UNAUTHORIZED.value(), "Erro de autorização!", request.getServletPath());
+        return new ApiError(HttpStatus.UNAUTHORIZED.value(), "Erro de autenticação!", request.getServletPath());
     }
 
     // 409
