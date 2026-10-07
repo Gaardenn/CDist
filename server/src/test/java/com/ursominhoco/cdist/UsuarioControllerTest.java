@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 @AutoConfigureTestRestTemplate
 public class UsuarioControllerTest {
-    private static final String API_USUARIO = "/usuario";
+    private static final String API_USUARIO = "/usuarios/cadastro";
 
     @Autowired
     private TestRestTemplate testRestTemplate;
