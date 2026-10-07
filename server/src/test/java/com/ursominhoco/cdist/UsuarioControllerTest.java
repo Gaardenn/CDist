@@ -105,6 +105,14 @@ public class UsuarioControllerTest {
         assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    @Test
+    public void postUsuario_quandoEmailTiverFormatoInvalido_recebeBADREQUEST() {
+        Usuario usuario = criarUsuarioValido();
+        usuario.setEmail("teste@@teste.com");
+        ResponseEntity<Object> resposta = testRestTemplate.postForEntity(API_USUARIO, usuario, Object.class);
+        assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
     private Usuario criarUsuarioValido() {
         return Usuario.builder().nome("Teste Teste").email("teste@teste.com").senha("Teste1235").build();
     }
