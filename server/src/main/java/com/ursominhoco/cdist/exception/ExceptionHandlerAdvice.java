@@ -68,24 +68,6 @@ public class ExceptionHandlerAdvice {
         return new ApiError(HttpStatus.UNAUTHORIZED.value(), "Erro de autorização!", request.getServletPath(), errors);
     }
 
-    @ExceptionHandler({BadCredentialsException.class})
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ApiError handlerValidationException(BadCredentialsException exception, HttpServletRequest request) {
-        String bindingResult = exception.getLocalizedMessage();
-        Map<String, String> errors = new HashMap<>();
-        errors.put(String.class.toString(), bindingResult);
-        return new ApiError(HttpStatus.UNAUTHORIZED.value(), "Erro de autorização!", request.getServletPath(), errors);
-    }
-
-    @ExceptionHandler({InsufficientAuthenticationException.class})
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ApiError handlerValidationException(InsufficientAuthenticationException exception, HttpServletRequest request) {
-        String bindingResult = exception.getLocalizedMessage();
-        Map<String, String> errors = new HashMap<>();
-        errors.put(String.class.toString(), bindingResult);
-        return new ApiError(HttpStatus.UNAUTHORIZED.value(), "Erro de autorização!", request.getServletPath(), errors);
-    }
-
     // 409
 
     @ExceptionHandler({DataIntegrityViolationException.class})
