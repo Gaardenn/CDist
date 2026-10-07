@@ -25,7 +25,8 @@ public class WebSecurity {
 //        http.cors(cors -> corsConfigurationSource());
 
         http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(auth -> auth  // Desabilita proteção contra requisições falsas (CSRF)
-                .anyRequest().permitAll());  // Libera todas as rotas de autenticação e autorização
+                .anyRequest().permitAll()).headers(headers -> headers  // Libera todas as rotas de autenticação e autorização
+                .frameOptions(frame -> frame.sameOrigin()));
         return http.build();
     }
 
