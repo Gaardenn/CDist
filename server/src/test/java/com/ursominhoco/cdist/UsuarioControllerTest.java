@@ -39,7 +39,7 @@ public class UsuarioControllerTest {
     public void postUsuario_quandoUsuarioEValido_usuarioSalvoNoBanco() {
         Usuario usuario = criarUsuarioValido();
         testRestTemplate.postForEntity(API_USUARIO, usuario, Object.class);
-        assertThat(userRepository.count()).isEqualTo(1);
+        assertThat(usuarioRepository.count()).isEqualTo(1);
     }
 
     private Usuario criarUsuarioValido() {
