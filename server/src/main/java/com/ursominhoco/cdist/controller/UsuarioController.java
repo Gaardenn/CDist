@@ -3,6 +3,7 @@ package com.ursominhoco.cdist.controller;
 import com.ursominhoco.cdist.entity.Usuario;
 import com.ursominhoco.cdist.service.UsuarioService;
 import com.ursominhoco.cdist.shared.Response;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class UsuarioController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Response> criarUsuario(@RequestBody Usuario usuario) {
+    public ResponseEntity<Response> criarUsuario(@RequestBody @Valid Usuario usuario) {
         usuarioService.salvar(usuario);
         return ResponseEntity.status(HttpStatus.CREATED).body(new Response("Usuário criado com sucesso!"));
     }
