@@ -62,6 +62,14 @@ public class UsuarioControllerTest {
         assertThat(usuario.getSenha()).isNotEqualTo(usuarioBanco.getSenha());
     }
 
+    @Test
+    public void postUsuario_quandoUsuarioTemNomeNulo_recebeBADREQUEST() {
+        Usuario usuario = criarUsuarioValido();
+        usuario.setNome(null);
+        ResponseEntity<Object> response = testRestTemplate.postForEntity(API_USUARIO, usuario, Object.class);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
     private Usuario criarUsuarioValido() {
         return Usuario.builder().nome("testeUsuario").email("teste@teste.com").senha("Teste1235").build();
     }
