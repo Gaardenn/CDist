@@ -2,6 +2,7 @@ package com.ursominhoco.cdist;
 
 import com.ursominhoco.cdist.entity.Usuario;
 import com.ursominhoco.cdist.repository.UsuarioRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.TestRestTemplate;
@@ -23,6 +24,11 @@ public class UsuarioControllerTest {
     private TestRestTemplate testRestTemplate;
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @BeforeEach
+    public void limparBanco() {
+        usuarioRepository.deleteAll();
+    }
 
     @Test
     public void postUsuario_quandoUsuarioEValido_recebeCREATED() {
