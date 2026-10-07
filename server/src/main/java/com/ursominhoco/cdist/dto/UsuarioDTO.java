@@ -1,6 +1,7 @@
 package com.ursominhoco.cdist.dto;
 
 import jakarta.persistence.Column;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -22,7 +23,7 @@ public class UsuarioDTO {
 
     @NotNull
     @Size(min = 7)
-    @Pattern(regexp = "^[A-Za-z0-9]+@[A-Za-z0-9]+\\.[A-Za-z]+$")
+    @Email
     @Column(unique = true)
     private String email;
 
