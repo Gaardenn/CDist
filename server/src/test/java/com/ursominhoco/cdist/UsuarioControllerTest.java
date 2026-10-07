@@ -130,6 +130,14 @@ public class UsuarioControllerTest {
     }
 
     @Test
+    public void postUsuario_quandoSenhaNaoTiverCaractereMinusculo_recebeBADREQUEST() {
+        Usuario usuario = criarUsuarioValido();
+        usuario.setSenha("TESTE1235");
+        ResponseEntity<Object> resposta = testRestTemplate.postForEntity(API_USUARIO, usuario, Object.class);
+        assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
+
+    @Test
     public void postUsuario_quandoSenhaNaoTiverCaractereMaiusculo_recebeBADREQUEST() {
         Usuario usuario = criarUsuarioValido();
         usuario.setSenha("teste1235");
