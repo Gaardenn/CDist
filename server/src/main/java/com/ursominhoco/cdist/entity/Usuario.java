@@ -26,7 +26,7 @@ public class Usuario {
 
     @NotNull
     @Size(min = 7)
-    @Email
+    @Email(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")
     @Column(unique = true)
     private String email;
 
