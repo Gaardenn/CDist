@@ -7,3 +7,4 @@
 - Autenticação via JWT com a biblioteca com.auth0:java-jwt, seguindo a estrutura do projeto base do professor.
 - Uso do Lombok para reduzir código repetitivo (getters, setters e construtores).
 - Banco de dados H2 em memória, por dispensar instalação e configuração adicionais durante o desenvolvimento.
+- Título do Pull Request seguindo padrão de commits `tipo: descrição` (feat, fix, docs, test, chore, refactor).
