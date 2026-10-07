@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("usuario")
+@RequestMapping("usuarios")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -22,7 +22,7 @@ public class UsuarioController {
         this.usuarioMapper = usuarioMapper;
     }
 
-    @PostMapping
+    @PostMapping("cadastro")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Response> criarUsuario(@RequestBody @Valid UsuarioDTO usuarioDTO) {
         usuarioService.salvar(usuarioMapper.paraEntidade(usuarioDTO));
