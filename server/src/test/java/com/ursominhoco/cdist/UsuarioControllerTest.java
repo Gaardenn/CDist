@@ -22,7 +22,7 @@ public class UsuarioControllerTest {
     private TestRestTemplate testRestTemplate;
 
     @Test
-    public void postUser_whenUserIsValid_receiveCREATED() {
+    public void postUsuario_quandoUsuarioEValido_recebeCREATED() {
         Usuario usuario = new Usuario();
         usuario.setNome("testeUsuario");
         usuario.setEmail("teste@teste.com");
@@ -30,5 +30,12 @@ public class UsuarioControllerTest {
 
         ResponseEntity<Object> response = testRestTemplate.postForEntity(API_USUARIO, usuario, Object.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+    }
+
+    @Test
+    public void postUsuario_quandoUsuarioEValido_usuarioSalvoNoBanco() {
+        Usuario usuario = criarUsuarioValido();
+        testRestTemplate.postForEntity(API_USUARIO, usuario, Object.class);
+        assertThat(userRepository.count()).isEqualTo(1);
     }
 }
