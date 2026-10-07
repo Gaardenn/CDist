@@ -1,6 +1,7 @@
 package com.ursominhoco.cdist;
 
 import com.ursominhoco.cdist.entity.Usuario;
+import com.ursominhoco.cdist.repository.UsuarioRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.resttestclient.TestRestTemplate;
@@ -20,6 +21,8 @@ public class UsuarioControllerTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @Test
     public void postUsuario_quandoUsuarioEValido_recebeCREATED() {
@@ -37,5 +40,9 @@ public class UsuarioControllerTest {
         Usuario usuario = criarUsuarioValido();
         testRestTemplate.postForEntity(API_USUARIO, usuario, Object.class);
         assertThat(userRepository.count()).isEqualTo(1);
+    }
+
+    private Usuario criarUsuarioValido() {
+        return Usuario.builder().nome("testeUsuario").email("teste@teste.com").senha("Teste1235").build();
     }
 }
