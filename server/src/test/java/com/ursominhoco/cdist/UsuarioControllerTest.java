@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -46,6 +48,18 @@ public class UsuarioControllerTest {
         Usuario usuario = criarUsuarioValido();
         testRestTemplate.postForEntity(API_USUARIO, usuario, Object.class);
         assertThat(usuarioRepository.count()).isEqualTo(1);
+    }
+
+    @Test
+    public void postUsuario_quandoUsuarioEValido_senhaEstaHasheadaNoBanco() {
+        Usuario usuario = criarUsuarioValido();
+
+        testRestTemplate.postForEntity(API_USUARIO, usuario, Object.class);
+
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        Usuario usuarioBanco = usuarios.getFirst();
+
+        assertThat(usuario.getSenha()).isNotEqualTo(usuarioBanco.getSenha());
     }
 
     private Usuario criarUsuarioValido() {
