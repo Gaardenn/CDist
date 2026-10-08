@@ -30,13 +30,13 @@ public class AuthServiceTest {
 
     @Test
     public void carregaUsuarioPorEmail_quandoUsuarioExiste_recebeUsuario() {
-        Usuario usuario = authService.carregaUsuarioPorEmail("teste@teste.com");
+        Usuario usuario = authService.loadUserByUsername("teste@teste.com");
         assertThat(usuario).isNotNull();
     }
 
     @Test
     public void carregaUsuarioPorEmail_quandoUsuarioInexistente_recebeNull() {
-        Usuario usuario = authService.carregaUsuarioPorEmail("teste@teste.com");
+        Usuario usuario = authService.loadUserByUsername("teste@teste.com");
         assertThat(usuario).isNull();
     }
 }
