@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @AutoConfigureTestRestTemplate
-public class UserTest {
+public class UsuarioTest {
     @Test
     public void getAuthorities_quandoCriado_eUsuario() {
         Usuario usuario = new Usuario(1L, "Teste Teste", "teste@teste.com", "Teste1235");
