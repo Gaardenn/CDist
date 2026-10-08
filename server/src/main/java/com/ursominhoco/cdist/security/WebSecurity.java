@@ -1,5 +1,6 @@
 package com.ursominhoco.cdist.security;
 
+import com.ursominhoco.cdist.service.AuthService;
 import lombok.SneakyThrows;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -47,8 +48,7 @@ public class WebSecurity {
                 .permitAll());
 
         http.authenticationManager(gerenciadorAutenticacao).addFilter(new
-                JWTAuthenticationFilter(gerenciadorAutenticacao, authService, SecurityConstants.SECRET,
-                SecurityConstants.EXPIRATION_TIME)).sessionManagement(s -> s
+                JWTAuthenticationFilter(gerenciadorAutenticacao, authService)).sessionManagement(s -> s
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
