@@ -155,9 +155,13 @@ GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
 {
     "token": "...",
     "usuario": {
-        "id": 1,
-        "nome": "Usuario 123",
-        "email": "usuario@email.com"
+        "authorities": [
+            {
+                "autoridade": "ROLE_USER"
+            }
+        ],
+        "email": "usuario@email.com",
+        "nome": "Usuario 123"
     }
 }
 ```
