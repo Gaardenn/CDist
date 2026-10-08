@@ -26,11 +26,11 @@ import java.util.List;
 @Configuration
 public class WebSecurity {
     private final AuthService authService;
-//    private final AuthenticationEntryPoint pontoEntradaAutenticacao;
+    private final AuthenticationEntryPoint pontoEntradaAutenticacao;
 
-    public WebSecurity(AuthService authService/*, AuthenticationEntryPoint pontoEntradaAutenticacao*/) {
+    public WebSecurity(AuthService authService, AuthenticationEntryPoint pontoEntradaAutenticacao) {
         this.authService = authService;
-//        this.pontoEntradaAutenticacao = pontoEntradaAutenticacao;
+        this.pontoEntradaAutenticacao = pontoEntradaAutenticacao;
     }
 
     @Bean
@@ -47,8 +47,8 @@ public class WebSecurity {
 
 //        http.cors(cors -> corsConfigurationSource());
 
-//        http.exceptionHandling(tratamentoExcecoes -> tratamentoExcecoes
-//                .authenticationEntryPoint(pontoEntradaAutenticacao));
+        http.exceptionHandling(tratamentoExcecoes -> tratamentoExcecoes
+                .authenticationEntryPoint(pontoEntradaAutenticacao));
 
         http.authorizeHttpRequests((autorizar) -> autorizar
                 .requestMatchers(HttpMethod.POST, "/usuarios/**").permitAll().requestMatchers("/error/**").permitAll()
