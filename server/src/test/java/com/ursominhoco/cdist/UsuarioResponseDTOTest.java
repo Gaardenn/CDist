@@ -2,6 +2,7 @@ package com.ursominhoco.cdist;
 
 import com.ursominhoco.cdist.entity.Usuario;
 import com.ursominhoco.cdist.security.dto.AuthorityResponseDTO;
+import com.ursominhoco.cdist.security.dto.UsuarioResponseDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
