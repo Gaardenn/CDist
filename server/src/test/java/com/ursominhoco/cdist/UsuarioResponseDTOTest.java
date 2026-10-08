@@ -33,7 +33,7 @@ public class UsuarioResponseDTOTest {
         usuario.setSenha("Teste1235");
         UsuarioResponseDTO usuarioRespostaDTO = new UsuarioResponseDTO(usuario);
         assertThat(usuarioRespostaDTO.getAuthorities()).isInstanceOf(AuthorityResponseDTO.class);
-        assertThat(usuarioRespostaDTO.getAuthorities().stream().anyMatch(auth -> auth.getAuthority()
-                .equals("ROLE_USER"))).isTrue();
+        assertThat(usuarioRespostaDTO.getAuthorities().stream().anyMatch(auth -> auth
+                .getAutoridade().equals("ROLE_USER"))).isTrue();
     }
 }
