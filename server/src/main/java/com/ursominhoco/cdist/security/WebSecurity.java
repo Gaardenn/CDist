@@ -51,7 +51,7 @@ public class WebSecurity {
 //                .authenticationEntryPoint(pontoEntradaAutenticacao));
 
         http.authorizeHttpRequests((autorizar) -> autorizar
-                .requestMatchers(HttpMethod.POST, "/users/**").permitAll().requestMatchers("/erro/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/usuarios/**").permitAll().requestMatchers("/error/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll().requestMatchers("/produtos/**").permitAll()
                 .requestMatchers("/categorias/**").permitAll().anyRequest().authenticated());
         http.authenticationManager(gerenciadorAutenticacao).addFilter(new

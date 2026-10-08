@@ -18,7 +18,7 @@ public class ErrorHandler implements ErrorController {
         this.atributosErro = atributosErro;
     }
 
-    @RequestMapping("erro")
+    @RequestMapping("error")
     public ApiError lidarErro(WebRequest requisicaoWeb, HttpServletResponse resposta) {
         Map<String, Object> atributos = atributosErro.getErrorAttributes(requisicaoWeb, ErrorAttributeOptions
                 .of(ErrorAttributeOptions.Include.MESSAGE));
