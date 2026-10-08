@@ -1,12 +1,18 @@
 package com.ursominhoco.cdist.security;
 
 import lombok.SneakyThrows;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -14,20 +20,43 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-@Slf4j
+//@Slf4j
 @EnableWebSecurity
 @Configuration
 public class WebSecurity {
+    private final AuthService authService;
+
+    public WebSecurity(AuthService authService) {
+        this.authService = authService;
+    }
 
     @Bean
-//    @SneakyThrows
+    @SneakyThrows
     public SecurityFilterChain filterChain(HttpSecurity http) {
+        AuthenticationManagerBuilder construtorGerenciadorAutenticacao = http.getSharedObject(AuthenticationManagerBuilder
+                .class);
+        construtorGerenciadorAutenticacao.userDetailsService(authService).passwordEncoder(codificadorSenha());
+        AuthenticationManager gerenciadorAutenticacao = construtorGerenciadorAutenticacao.build();
+
+        http.csrf(AbstractHttpConfigurer::disable);
+
 //        http.cors(cors -> corsConfigurationSource());
 
-        http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(auth -> auth  // Desabilita proteção contra requisições falsas (CSRF)
-                .anyRequest().permitAll()).headers(headers -> headers  // Libera todas as rotas de autenticação e autorização
-                .frameOptions(frame -> frame.sameOrigin()));
+        http.authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/usuarios/**").permitAll().requestMatchers("/error/**").permitAll().anyRequest()
+                .permitAll());
+
+        http.authenticationManager(gerenciadorAutenticacao).addFilter(new
+                JWTAuthenticationFilter(gerenciadorAutenticacao, authService, SecurityConstants.SECRET,
+                SecurityConstants.EXPIRATION_TIME)).sessionManagement(s -> s
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder codificadorSenha() {
+        return new BCryptPasswordEncoder();
     }
 
 //    Manter comentado por enquanto para poder testar de forma fácil sem tokens e limitações, depois vamos ativar de
