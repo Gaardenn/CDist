@@ -55,7 +55,8 @@ public class WebSecurity {
                 .requestMatchers("/h2-console/**").permitAll().requestMatchers("/produtos/**").permitAll()
                 .requestMatchers("/categorias/**").permitAll().anyRequest().authenticated());
         http.authenticationManager(gerenciadorAutenticacao).addFilter(new
-                JWTAuthenticationFilter(gerenciadorAutenticacao, authService)).sessionManagement(
+                JWTAuthenticationFilter(gerenciadorAutenticacao, authService)).addFilter(new
+                JWTAuthorizationFilter(gerenciadorAutenticacao, authService)).sessionManagement(
                         s -> s.sessionCreationPolicy(SessionCreationPolicy
                                 .STATELESS));
 
