@@ -32,8 +32,7 @@ public class UsuarioResponseDTOTest {
         usuario.setEmail("teste@teste.com");
         usuario.setSenha("Teste1235");
         UsuarioResponseDTO usuarioRespostaDTO = new UsuarioResponseDTO(usuario);
-        assertThat(usuarioRespostaDTO.getAuthorities()).isInstanceOf(AuthorityResponseDTO.class);
-        assertThat(usuarioRespostaDTO.getAuthorities().stream().anyMatch(auth -> auth
-                .getAutoridade().equals("ROLE_USER"))).isTrue();
+        assertThat(usuarioRespostaDTO.getAuthorities()).extracting(AuthorityResponseDTO::getAutoridade)
+                .containsExactly("ROLE_USER");
     }
 }

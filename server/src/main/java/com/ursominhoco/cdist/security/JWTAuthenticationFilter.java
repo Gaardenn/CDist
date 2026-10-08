@@ -15,11 +15,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import tools.jackson.core.JacksonException;
 import tools.jackson.core.exc.StreamReadException;
 import tools.jackson.databind.DatabindException;
 import tools.jackson.databind.ObjectMapper;
@@ -36,6 +38,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         this.gerenciadorAutenticacao = gerenciadorAutenticacao;
         this.authService = authService;
         setFilterProcessesUrl("/usuarios/login");
+        setAuthenticationFailureHandler((request, response, exception) -> {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"status\":401,\"message\":\"Erro de autenticação!\"}");
+        });
+
     }
 
     @Override
@@ -50,8 +58,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             }
             return gerenciadorAutenticacao.authenticate(new UsernamePasswordAuthenticationToken(credenciais.getEmail(),
                     credenciais.getSenha(), usuario.getAuthorities()));
-        } catch (StreamReadException | DatabindException | IOException e) {
-            throw new RuntimeException(e);
+        } catch (IOException | JacksonException e) {
+            throw new AuthenticationServiceException("Corpo da requisição inválido!", e);
         }
     }
 

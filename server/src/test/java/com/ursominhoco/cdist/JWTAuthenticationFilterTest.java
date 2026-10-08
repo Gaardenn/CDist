@@ -38,8 +38,8 @@ public class JWTAuthenticationFilterTest {
     @Test
     public void postUsuarios_quandoSenhaErrada_recebe401() {
         Map<String, String> credenciais = Map.of(
-                "username", "teste@teste.com",
-                "password", "TesteErrado1"
+                "email", "teste@teste.com",
+                "senha", "TesteErrado1"
         );
 
         ResponseEntity<Object> resposta = templateTesteRest.postForEntity("/usuarios/login", credenciais, Object
@@ -51,8 +51,8 @@ public class JWTAuthenticationFilterTest {
     @Test
     public void postUsuarios_quandoEmailNaoExiste_recebe401() {
         Map<String, String> credenciais = Map.of(
-                "username", "testenaoexiste@teste.com",
-                "password", "Teste1"
+                "email", "testenaoexiste@teste.com",
+                "senha", "Teste1"
         );
 
         ResponseEntity<Object> resposta = templateTesteRest.postForEntity("/usuarios/login", credenciais, Object
@@ -64,8 +64,8 @@ public class JWTAuthenticationFilterTest {
     @Test
     public void postUsuarios_quandoEmailNulo_recebe401() {
         Map<String, String> credenciais = new HashMap<>();
-        credenciais.put("username", null);
-        credenciais.put("password", "Teste1235");
+        credenciais.put("email", null);
+        credenciais.put("senha", "Teste1235");
 
         ResponseEntity<Object> resposta = templateTesteRest.postForEntity("/usuarios/login", credenciais, Object
                 .class);
@@ -76,8 +76,8 @@ public class JWTAuthenticationFilterTest {
     @Test
     public void postUsuarios_quandoSenhaNula_recebe401() {
         Map<String, String> credenciais = new HashMap<>();
-        credenciais.put("username", "teste@teste.com");
-        credenciais.put("password", null);
+        credenciais.put("email", "teste@teste.com");
+        credenciais.put("senha", null);
 
         ResponseEntity<Object> resposta = templateTesteRest.postForEntity("/usuarios/login", credenciais, Object
                 .class);
@@ -88,8 +88,8 @@ public class JWTAuthenticationFilterTest {
     @Test
     public void postUsuarios_quandoEmailVazio_recebe401() {
         Map<String, String> credenciais = new HashMap<>();
-        credenciais.put("username", "");
-        credenciais.put("password", "Teste1235");
+        credenciais.put("email", "");
+        credenciais.put("senha", "Teste1235");
 
         ResponseEntity<Object> resposta = templateTesteRest.postForEntity("/usuarios/login", credenciais, Object
                 .class);
@@ -100,8 +100,8 @@ public class JWTAuthenticationFilterTest {
     @Test
     public void postUsuarios_quandoSenhaVazia_recebe401() {
         Map<String, String> credenciais = new HashMap<>();
-        credenciais.put("username", "teste@teste.com");
-        credenciais.put("password", "");
+        credenciais.put("email", "teste@teste.com");
+        credenciais.put("senha", "");
 
         ResponseEntity<Object> resposta = templateTesteRest.postForEntity("/usuarios/login", credenciais, Object
                 .class);
@@ -140,8 +140,8 @@ public class JWTAuthenticationFilterTest {
     @Test
     public void postUsuarios_quandoEmailComCaixaDiferente_recebe401() {
         Map<String, String> credenciais = new HashMap<>();
-        credenciais.put("username", "TESTE@teste.com");
-        credenciais.put("password", "Teste1235");
+        credenciais.put("email", "TESTE@teste.com");
+        credenciais.put("senha", "Teste1235");
 
         ResponseEntity<Object> resposta = templateTesteRest.postForEntity("/usuarios/login", credenciais, Object
                 .class);
@@ -152,8 +152,8 @@ public class JWTAuthenticationFilterTest {
     @Test
     public void postUsuarios_quandoLogado_recebeContentTypeJson() {
         Map<String, String> credenciais = new HashMap<>();
-        credenciais.put("username", "teste@teste.com");
-        credenciais.put("password", "Teste1235");
+        credenciais.put("email", "teste@teste.com");
+        credenciais.put("senha", "Teste1235");
 
         ResponseEntity<Object> resposta = templateTesteRest.postForEntity("/usuarios/login", credenciais, Object
                 .class);
