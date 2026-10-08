@@ -43,28 +43,28 @@ public class UserTest {
     @Test
     public void isContaNaoExpirada_quandoCriado_recebeVerdadeiro() {
         Usuario usuario = new Usuario(1L, "Teste Teste", "teste@teste.com", "Teste1235");
-        boolean contaNaoExpirada = usuario.isContaNaoExpirada();
+        boolean contaNaoExpirada = usuario.isAccountNonExpired();
         assertThat(contaNaoExpirada).isTrue();
     }
 
     @Test
     public void isContaNaoTrancada_quandoCriado_recebeVerdadeiro() {
         Usuario usuario = new Usuario(1L, "Teste Teste", "teste@teste.com", "Teste1235");
-        boolean contaNaoTrancada = usuario.isContaNaoTrancada();
+        boolean contaNaoTrancada = usuario.isAccountNonLocked();
         assertThat(contaNaoTrancada).isTrue();
     }
 
     @Test
     public void isCredenciaisNaoExpiradas_quandoCriado_recebeVerdadeiro() {
         Usuario usuario = new Usuario(1L, "Teste Teste", "teste@teste.com", "Teste1235");
-        boolean credenciaisNaoExpiradas = usuario.isCredenciaisNaoExpiradas();
+        boolean credenciaisNaoExpiradas = usuario.isCredentialsNonExpired();
         assertThat(credenciaisNaoExpiradas).isTrue();
     }
 
     @Test
     public void isHabilitada_quandoCriado_recebeVerdadeiro() {
         Usuario usuario = new Usuario(1L, "Teste Teste", "teste@teste.com", "Teste1235");
-        boolean habilitada = usuario.isHabilitada();
+        boolean habilitada = usuario.isEnabled();
         assertThat(habilitada).isTrue();
     }
 }
