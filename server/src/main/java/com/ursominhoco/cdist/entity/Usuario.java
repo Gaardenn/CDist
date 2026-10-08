@@ -42,6 +42,16 @@ public class Usuario implements UserDetails {
     private String senha;
 
     @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+    @Override
     @Transient
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
