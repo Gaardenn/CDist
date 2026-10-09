@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -19,33 +20,39 @@ import java.util.List;
 public class WebSecurity {
 
     @Bean
-    @SneakyThrows
+//    @SneakyThrows
     public SecurityFilterChain filterChain(HttpSecurity http) {
-        http.cors(cors -> corsConfigurationSource());
+//        http.cors(cors -> corsConfigurationSource());
 
+        http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(auth -> auth  // Desabilita proteção contra requisições falsas (CSRF)
+                .anyRequest().permitAll()).headers(headers -> headers  // Libera todas as rotas de autenticação e autorização
+                .frameOptions(frame -> frame.sameOrigin()));
         return http.build();
     }
 
-    /*
-        O compartilhamento de recursos de origem cruzada (CORS) é um mecanismo para integração de aplicativos.
-        O CORS define uma maneira de os aplicativos Web clientes carregados em um domínio interagirem com recursos em um domínio diferente.
-    */
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        // Lista das origens autorizadas, no nosso caso que iremos rodar a aplicação localmente o * poderia ser trocado
-        // por: http://localhost:porta, em que :porta será a porta em que a aplicação cliente será executada
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
-        // Lista dos métodos HTTP autorizados
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT"));
-        // Lista dos Headers autorizados, o Authorization será o header que iremos utilizar para transferir o Token
-        configuration.setAllowedHeaders(List.of("Authorization","x-xsrf-token",
-                "Access-Control-Allow-Headers", "Origin",
-                "Accept", "X-Requested-With", "Content-Type",
-                "Access-Control-Request-Method",
-                "Access-Control-Request-Headers", "Auth-Id-Token"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
+//    Manter comentado por enquanto para poder testar de forma fácil sem tokens e limitações, depois vamos ativar de
+//    volta
+//
+//    /*
+//        O compartilhamento de recursos de origem cruzada (CORS) é um mecanismo para integração de aplicativos.
+//        O CORS define uma maneira de os aplicativos Web clientes carregados em um domínio interagirem com recursos em um domínio diferente.
+//    */
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        // Lista das origens autorizadas, no nosso caso que iremos rodar a aplicação localmente o * poderia ser trocado
+//        // por: http://localhost:porta, em que :porta será a porta em que a aplicação cliente será executada
+//        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+//        // Lista dos métodos HTTP autorizados
+//        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT"));
+//        // Lista dos Headers autorizados, o Authorization será o header que iremos utilizar para transferir o Token
+//        configuration.setAllowedHeaders(List.of("Authorization","x-xsrf-token",
+//                "Access-Control-Allow-Headers", "Origin",
+//                "Accept", "X-Requested-With", "Content-Type",
+//                "Access-Control-Request-Method",
+//                "Access-Control-Request-Headers", "Auth-Id-Token"));
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
 }
