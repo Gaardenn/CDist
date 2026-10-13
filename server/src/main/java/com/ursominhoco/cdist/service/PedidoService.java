@@ -1,9 +1,8 @@
 package com.ursominhoco.cdist.service;
 
 import com.ursominhoco.cdist.entity.Pedido;
+import com.ursominhoco.cdist.exception.RecursoNaoEncontradoException;
 import com.ursominhoco.cdist.repository.PedidoRepository;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +23,10 @@ public class PedidoService {
 
     @Transactional(readOnly = true)
     public Pedido obterPorId(Long id, String email) {
-        return pedidoRepository.findByIdAndUsuarioEmail(id, email);
+        Pedido pedido = pedidoRepository.findByIdAndUsuarioEmail(id, email);
+        if (pedido == null) {
+            throw new RecursoNaoEncontradoException("Pedido não encontrado");
+        }
+        return pedido;
     }
 }
