@@ -1,4 +1,8 @@
 package com.ursominhoco.cdist.repository;
 
-public class CategoriaRepository {
+import com.ursominhoco.cdist.entity.Categoria;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
+
 }
