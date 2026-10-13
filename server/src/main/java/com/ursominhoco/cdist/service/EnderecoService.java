@@ -39,6 +39,10 @@ public class EnderecoService {
 
     @Transactional(readOnly = true)
     public Endereco obterPorId(Long id, String email) {
-        return enderecoRepository.findByIdAndUsuarioEmail(id, email).orElseThrow(RecursoNaoEncontradoException::new);
+        Endereco endereco = enderecoRepository.findByIdAndUsuarioEmail(id, email);
+    	if (endereco == null) {
+	    throw new RecursoNaoEncontradoException("Endereço não encontrado");
+	}
+	return endereco;
     }
 }
