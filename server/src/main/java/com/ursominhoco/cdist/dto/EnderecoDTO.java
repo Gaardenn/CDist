@@ -1,8 +1,8 @@
 package com.ursominhoco.cdist.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @NoArgsConstructor
@@ -18,17 +18,22 @@ public class EnderecoDTO {
     private String cep;
 
     @NotBlank
+    @Size(max = 200, message = "Logradouro deve ter no máximo 200 caracteres")
     private String logradouro;
 
     @NotBlank
+    @Size(max = 10, message = "Número deve ter no máximo 10 caracteres")
     private String numero;
 
+    @Size(max = 50, message = "Complemento deve ter no máximo 50 caracteres")
     private String complemento;
 
     @NotBlank
+    @Size(max = 100, message = "Bairro deve ter no máximo 100 caracteres")
     private String bairro;
 
     @NotBlank
+    @Size(max = 150, message = "Cidade deve ter no máximo 150 caracteres")
     private String cidade;
 
     @NotBlank
