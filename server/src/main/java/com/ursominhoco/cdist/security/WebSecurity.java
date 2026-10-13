@@ -1,12 +1,20 @@
 package com.ursominhoco.cdist.security;
 
+import com.ursominhoco.cdist.service.AuthService;
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -14,20 +22,50 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-@Slf4j
 @EnableWebSecurity
 @Configuration
 public class WebSecurity {
+    private final AuthService authService;
+    private final AuthenticationEntryPoint pontoEntradaAutenticacao;
+
+    public WebSecurity(AuthService authService, AuthenticationEntryPoint pontoEntradaAutenticacao) {
+        this.authService = authService;
+        this.pontoEntradaAutenticacao = pontoEntradaAutenticacao;
+    }
 
     @Bean
-//    @SneakyThrows
+    @SneakyThrows
     public SecurityFilterChain filterChain(HttpSecurity http) {
+        AuthenticationManagerBuilder construtorGerenciadorAutenticacao = http.getSharedObject(
+                AuthenticationManagerBuilder.class);
+        construtorGerenciadorAutenticacao.userDetailsService(authService).passwordEncoder(codificadorSenha());
+        AuthenticationManager gerenciadorAutenticacao = construtorGerenciadorAutenticacao.build();
+
+        http.headers(cabecalhos -> cabecalhos.frameOptions(HeadersConfigurer
+                .FrameOptionsConfig::disable));
+        http.csrf(AbstractHttpConfigurer::disable);
+
 //        http.cors(cors -> corsConfigurationSource());
 
-        http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(auth -> auth  // Desabilita proteção contra requisições falsas (CSRF)
-                .anyRequest().permitAll()).headers(headers -> headers  // Libera todas as rotas de autenticação e autorização
-                .frameOptions(frame -> frame.sameOrigin()));
+        http.exceptionHandling(tratamentoExcecoes -> tratamentoExcecoes
+                .authenticationEntryPoint(pontoEntradaAutenticacao));
+
+        http.authorizeHttpRequests((autorizar) -> autorizar
+                .requestMatchers(HttpMethod.POST, "/usuarios/**").permitAll().requestMatchers("/error/**").permitAll()
+                .requestMatchers("/h2-console/**").permitAll().requestMatchers("/produtos/**").permitAll()
+                .requestMatchers("/categorias/**").permitAll().anyRequest().authenticated());
+        http.authenticationManager(gerenciadorAutenticacao).addFilter(new
+                JWTAuthenticationFilter(gerenciadorAutenticacao, authService)).addFilter(new
+                JWTAuthorizationFilter(gerenciadorAutenticacao, authService)).sessionManagement(
+                        s -> s.sessionCreationPolicy(SessionCreationPolicy
+                                .STATELESS));
+
         return http.build();
+    }
+
+    @Bean
+    public PasswordEncoder codificadorSenha() {
+        return new BCryptPasswordEncoder();
     }
 
 //    Manter comentado por enquanto para poder testar de forma fácil sem tokens e limitações, depois vamos ativar de
