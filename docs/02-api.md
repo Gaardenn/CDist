@@ -9,6 +9,7 @@ POST | `/usuarios/cadastro` | público | 201 criado; 400 dados inválidos; 409 c
 POST | `/autenticacao/login` | público | 200 OK; 401 credenciais inválidas
 POST | `/enderecos` | privado | 201 criado; 400 dados inválidos
 GET | `/enderecos` | privado | 200 OK
+GET | `/endereços/{id}` | privado | 200 OK; 404 não encontrado
 POST | `/pedidos` | privado | 201 criado; 400 dados inválidos
 GET | `/pedidos` | privado | 200 OK
 GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
