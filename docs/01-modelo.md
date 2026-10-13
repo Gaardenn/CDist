@@ -132,6 +132,7 @@ Produto representa um jogo à venda na loja. O campo `preco` guarda o **preço c
 | descricao | String | Sim | Texto longo |
 | quantidadeAvaliacoes | int | Sim | Padrão 0 |
 | avaliacaoNotaUm ... avaliacaoNotaCinco | int | Sim | Padrão 0; quantidade de avaliações de cada nota (5 colunas) |
+| estoque | int | Sim | Quantidade do produto em estoque. É usado para calcular disponibilidade. 
 
 ### 3.3 Miniatura
 Imagens secundárias do produto, exibidas na página de detalhes. **Entra só se sobrar tempo** (não é consumida por endpoint obrigatório da entrega 1).
