@@ -66,4 +66,12 @@ public class ExceptionHandlerAdvice {
     public ApiError handlerValidationException(DataIntegrityViolationException exception, HttpServletRequest request) {
         return new ApiError(HttpStatus.CONFLICT.value(), "Erro de conflito!", request.getServletPath());
     }
+
+    // 404
+
+    @ExceptionHandler({RecursoNaoEncontradoException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handlerNaoEncontrado(RecursoNaoEncontradoException exception, HttpServletRequest request) {
+        return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
+    }
 }
