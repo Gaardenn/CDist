@@ -237,8 +237,8 @@ GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
     "enderecoId": 1,
     "metodoPagamento": "PIX",
     "itens": [
-        { "produtoId": 4, "quantidade": 1 },
-        { "produtoId": 7, "quantidade": 2 }
+        { "produtoId": 7, "quantidade": 1 },
+        { "produtoId": 3, "quantidade": 2 }
     ]
 }
 ```
@@ -247,13 +247,12 @@ GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
 
 ```JSON
 {
-    "id": 10,
-    "data": "2026-10-06T17:45:00",
-    "status": "AGUARDANDO_PAGAMENTO",
+    "id": 1,
+    "data": "2026-10-13T17:45:00",
+    "status": "PENDENTE",
     "metodoPagamento": "PIX",
     "endereco": {
-        "id": 1,
-        "cep": "85501-000",
+        "cep": "85501000",
         "logradouro": "Rua Tocantins",
         "numero": "120",
         "complemento": "Apto 2",
@@ -263,22 +262,27 @@ GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
     },
     "itens": [
         {
-            "produtoId": 4,
+            "produtoId": 7,
             "nome": "Marvel's Spider-Man 2",
-            "imagem": "https://lojavirtualcdist.vercel.app/spider-man-2-capa.webp",
+            "imagem": "https://lojavirtualcdist.vercel.app/Marvels%20Spider-Man%202.webp",
             "quantidade": 1,
-            "precoUnitario": 254.91,
+            "precoUnitario": 299.90,
+            "desconto": 0.15,
+            "precoFinal": 254.91,
             "subtotal": 254.91
         },
         {
-            "produtoId": 7,
+            "produtoId": 3,
             "nome": "Super Mario Odyssey",
-            "imagem": "https://lojavirtualcdist.vercel.app/super-mario-odyssey-capa.webp",
+            "imagem": "https://lojavirtualcdist.vercel.app/Super%20Mario%20Odyssey.webp",
             "quantidade": 2,
             "precoUnitario": 349.99,
+            "desconto": 0.00,
+            "precoFinal": 349.99,
             "subtotal": 699.98
         }
     ],
+    "frete": 0.00,
     "total": 954.89
 }
 ```
@@ -292,7 +296,7 @@ GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
     {
         "id": 10,
         "data": "2026-10-06T17:45:00",
-        "status": "ENTREGUE",
+        "status": "REALIZADO",
         "quantidadeItens": 3,
         "total": 954.89
     }
@@ -307,7 +311,7 @@ GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
 {
     "id": 10,
     "data": "2026-10-06T17:45:00",
-    "status": "ENTREGUE",
+    "status": "ENVIADO",
     "metodoPagamento": "PIX",
     "endereco": {
         "id": 1,
