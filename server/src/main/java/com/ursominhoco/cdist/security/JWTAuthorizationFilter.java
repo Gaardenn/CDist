@@ -47,7 +47,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
             if (email != null) {
                 Usuario usuario = (Usuario) authService.loadUserByUsername(email);
-                return new UsernamePasswordAuthenticationToken(usuario.getEmail(), null, usuario
+                return new UsernamePasswordAuthenticationToken(usuario, null, usuario
                         .getAuthorities());
             }
         } catch (JWTVerificationException | UsernameNotFoundException e) { }
