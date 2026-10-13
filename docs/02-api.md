@@ -150,7 +150,7 @@ GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
 }
 ```
 
-### POST /autenticacao/login
+### POST /usuarios/login
 
 #### Request
 
