@@ -35,9 +35,6 @@ public class PedidoController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<PedidoResponseDTO> obterPorId(@PathVariable Long id, @AuthenticationPrincipal UserDetails usuario) {
         Pedido pedido = pedidoService.obterPorId(id, usuario.getUsername());
-        if (pedido == null) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.status(HttpStatus.OK).body(pedidoMapper.paraDto(pedido));
     }
 }
