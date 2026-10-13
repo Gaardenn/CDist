@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Entity
 @Table(name = "pedido_produto")
@@ -39,4 +40,13 @@ public class PedidoProduto {
     @NotNull
     @Column(precision = 3, scale = 2)
     private BigDecimal desconto;
+
+    public BigDecimal getPrecoFinal() {
+        BigDecimal fator = BigDecimal.ONE.subtract(desconto);
+        return precoUnitario.multiply(fator).setScale(2, RoundingMode.HALF_DOWN);
+    }
+
+    public BigDecimal getSubtotal() {
+        return getPrecoFinal().multiply(BigDecimal.valueOf(quantidade));
+    }
 }
