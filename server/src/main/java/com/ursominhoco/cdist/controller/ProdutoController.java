@@ -4,6 +4,7 @@ import com.ursominhoco.cdist.dto.ProdutoDetalheDTO;
 import com.ursominhoco.cdist.dto.ProdutoResumoDTO;
 import com.ursominhoco.cdist.mapper.ProdutoMapper;
 import com.ursominhoco.cdist.service.ProdutoService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedModel;

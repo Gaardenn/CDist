@@ -11,7 +11,6 @@ import org.mapstruct.MappingConstants;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -20,14 +19,14 @@ public interface ProdutoMapper {
 
     @Mapping(target = "precoFinal", expression = "java(calcularPrecoFinal(produto))")
     @Mapping(target = "status", expression = "java(calcularStatus(produto))")
-    ProdutoResumoDTO paraResumoDTO(Produto produto);
+    ProdutoResumoDTO paraResumoDto(Produto produto);
 
     @Mapping(target = "precoFinal", expression = "java(calcularPrecoFinal(produto))")
     @Mapping(target = "avaliacao", expression = "java(calcularMediaAvaliacoes(produto))")
     @Mapping(target = "distribuicaoAvaliacoes", expression = "java(montarDistribuicao(produto))")
-    ProdutoDetalheDTO paraDetalheDTO(Produto produto);
+    ProdutoDetalheDTO paraDetalheDto(Produto produto);
 
-    CategoriaResumoDTO paracategoriaResumoDTO(Categoria categoria);
+    CategoriaResumoDTO paraCategoriaResumoDto(Categoria categoria);
 
     default BigDecimal calcularPrecoFinal(Produto produto){
         BigDecimal fator = BigDecimal.ONE.subtract(produto.getDesconto());
