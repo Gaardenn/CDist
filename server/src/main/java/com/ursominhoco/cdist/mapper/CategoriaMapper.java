@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CategoriaMapper {
-    CategoriaDTO paraDTO(Categoria categoria);
+    CategoriaDTO paraDto(Categoria categoria);
 
-    List<CategoriaDTO> paraDTO(List<Categoria> categorias);
+    List<CategoriaDTO> paraDto(List<Categoria> categorias);
 }
