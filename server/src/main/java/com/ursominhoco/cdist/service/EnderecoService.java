@@ -39,6 +39,6 @@ public class EnderecoService {
 
     @Transactional(readOnly = true)
     public Endereco obterPorId(Long id, String email) {
-        return enderecoRepository.findByIdAndUsuarioEmail(id, email);
+        return enderecoRepository.findByIdAndUsuarioEmail(id, email).orElseThrow(RecursoNaoEncontradoException::new);
     }
 }

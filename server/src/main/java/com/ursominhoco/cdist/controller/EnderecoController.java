@@ -43,9 +43,6 @@ public class EnderecoController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<EnderecoDTO> obterPorId(@PathVariable Long id, @AuthenticationPrincipal UserDetails usuario) {
         Endereco endereco = enderecoService.obterPorId(id, usuario.getUsername());
-        if (endereco == null) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.status(HttpStatus.OK).body(enderecoMapper.paraDto(endereco));
     }
 }
