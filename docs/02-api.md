@@ -6,9 +6,10 @@ GET | `/categorias` | público | 200 OK
 GET | `/produtos` | público |  200 OK; filtros `?categoriaId=X&page=Y&size=Z`
 GET | `/produtos/{id}` | público | 200 OK; 404 não encontrado
 POST | `/usuarios/cadastro` | público | 201 criado; 400 dados inválidos; 409 conflito
-POST | `/autenticacao/login` | público | 200 OK; 401 credenciais inválidas
+POST | `/usuarios/login` | público | 200 OK; 401 credenciais inválidas
 POST | `/enderecos` | privado | 201 criado; 400 dados inválidos
 GET | `/enderecos` | privado | 200 OK
+GET | `/enderecos/{id}` | privado | 200 OK; 404 não encontrado
 POST | `/pedidos` | privado | 201 criado; 400 dados inválidos
 GET | `/pedidos` | privado | 200 OK
 GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
@@ -184,10 +185,10 @@ GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
 
 ```JSON
 {
-    "cep": "85501-000",
-    "logradouro": "Rua Tocantins",
-    "numero": "120",
-    "complemento": "Apto 2",
+    "cep": "85501000",
+    "logradouro": "Rua das Flores",
+    "numero": "123",
+    "complemento": "Apto 4",
     "bairro": "Centro",
     "cidade": "Pato Branco",
     "estado": "PR"
@@ -199,10 +200,10 @@ GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
 ```JSON
 {
     "id": 1,
-    "cep": "85501-000",
-    "logradouro": "Rua Tocantins",
-    "numero": "120",
-    "complemento": "Apto 2",
+    "cep": "85501000",
+    "logradouro": "Rua das Flores",
+    "numero": "123",
+    "complemento": "Apto 4",
     "bairro": "Centro",
     "cidade": "Pato Branco",
     "estado": "PR"
@@ -217,15 +218,42 @@ GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
 [
     {
         "id": 1,
-        "cep": "85501-000",
-        "logradouro": "Rua Tocantins",
-        "numero": "120",
-        "complemento": "Apto 2",
+        "cep": "85501000",
+        "logradouro": "Rua das Flores",
+        "numero": "123",
+        "complemento": "Apto 4",
         "bairro": "Centro",
+        "cidade": "Pato Branco",
+        "estado": "PR"
+    },
+    {
+        "id": 2,
+        "cep": "85501005",
+        "logradouro": "Rua dos Ladrilhos",
+        "numero": "265",
+        "complemento": null,
+        "bairro": "Fraron",
         "cidade": "Pato Branco",
         "estado": "PR"
     }
 ]
+```
+
+### GET /enderecos/{id}
+
+#### Response (200)
+
+```json
+{
+    "id": 1,
+    "cep": "85501000",
+    "logradouro": "Rua das Flores",
+    "numero": "123",
+    "complemento": "Apto 4",
+    "bairro": "Centro",
+    "cidade": "Pato Branco",
+    "estado": "PR"
+}
 ```
 
 ### POST /pedidos
