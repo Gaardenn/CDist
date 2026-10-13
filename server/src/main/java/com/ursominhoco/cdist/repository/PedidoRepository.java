@@ -1,4 +1,8 @@
 package com.ursominhoco.cdist.repository;
 
-public class PedidoRepository {
+import com.ursominhoco.cdist.entity.Pedido;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
+
 }
