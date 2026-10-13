@@ -1,7 +1,6 @@
 package com.ursominhoco.cdist.dto;
 
-import com.ursominhoco.cdist.entity.Usuario;
-import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
@@ -14,25 +13,25 @@ import lombok.*;
 public class EnderecoDTO {
     private Long id;
 
-    @NotNull
+    @NotBlank
     @Pattern(regexp = "\\d{8}", message = "CEP deve ter 8 dígitos")
     private String cep;
 
-    @NotNull
+    @NotBlank
     private String logradouro;
 
-    @NotNull
+    @NotBlank
     private String numero;
 
     private String complemento;
 
-    @NotNull
+    @NotBlank
     private String bairro;
 
-    @NotNull
+    @NotBlank
     private String cidade;
 
-    @NotNull
+    @NotBlank
     @Pattern(regexp = "[A-Z]{2}", message = "Estado deve ter 2 letras maiúsculas")
     private String estado;
 }
