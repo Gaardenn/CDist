@@ -65,7 +65,7 @@ public class Produto {
     private LocalDate dataLancamento;
 
     @NotNull
-    @Column(length = 100)
+    @Column(length = 2000)
     private String descricao;
 
     private int quantidadeAvaliacoes;
