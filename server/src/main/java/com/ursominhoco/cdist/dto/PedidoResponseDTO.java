@@ -21,7 +21,7 @@ public class PedidoResponseDTO {
     private LocalDateTime data;
     private StatusPedido status;
     private MetodoPagamento metodoPagamento;
-    private Endereco endereco;
+    private EnderecoPedidoDTO endereco;
     private List<ItemPedidoResponseDTO> itens;
     private BigDecimal frete;
     private BigDecimal total;
