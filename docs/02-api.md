@@ -6,10 +6,10 @@ GET | `/categorias` | público | 200 OK
 GET | `/produtos` | público |  200 OK; filtros `?categoriaId=X&page=Y&size=Z`
 GET | `/produtos/{id}` | público | 200 OK; 404 não encontrado
 POST | `/usuarios/cadastro` | público | 201 criado; 400 dados inválidos; 409 conflito
-POST | `/autenticacao/login` | público | 200 OK; 401 credenciais inválidas
+POST | `/usuarios/login` | público | 200 OK; 401 credenciais inválidas
 POST | `/enderecos` | privado | 201 criado; 400 dados inválidos
 GET | `/enderecos` | privado | 200 OK
-GET | `/endereços/{id}` | privado | 200 OK; 404 não encontrado
+GET | `/enderecos/{id}` | privado | 200 OK; 404 não encontrado
 POST | `/pedidos` | privado | 201 criado; 400 dados inválidos
 GET | `/pedidos` | privado | 200 OK
 GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
@@ -151,7 +151,7 @@ GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
 }
 ```
 
-### POST /autenticacao/login
+### POST /usuarios/login
 
 #### Request
 
@@ -322,11 +322,101 @@ GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
 ```JSON
 [
     {
-        "id": 10,
-        "data": "2026-10-06T17:45:00",
-        "status": "REALIZADO",
-        "quantidadeItens": 3,
-        "total": 954.89
+        "id": 2,
+        "data": "2026-10-12T15:30:00",
+        "status": "PENDENTE",
+        "metodoPagamento": "PIX",
+        "endereco": {
+            "cep": "85580000",
+            "logradouro": "Rua A",
+            "numero": "10",
+            "complemento": null,
+            "bairro": "Centro",
+            "cidade": "Itapejara d'Oeste",
+            "estado": "PR"
+        },
+        "itens": [
+            {
+                "produtoId": 1,
+                "nome": "God of War Ragnarök",
+                "imagem": "https://lojavirtualcdist.vercel.app/God_of_War_Ragnar%C3%B6k_capa.webp",
+                "quantidade": 1,
+                "precoUnitario": 100.00,
+                "desconto": 0.00,
+                "precoFinal": 100.00,
+                "subtotal": 100.00
+            }
+        ],
+        "frete": 10.00,
+        "total": 110.00
+    },
+    {
+        "id": 3,
+        "data": "2026-10-05T09:00:00",
+        "status": "PENDENTE",
+        "metodoPagamento": "PIX",
+        "endereco": {
+            "cep": "85580000",
+            "logradouro": "Rua A",
+            "numero": "10",
+            "complemento": null,
+            "bairro": "Centro",
+            "cidade": "Itapejara d'Oeste",
+            "estado": "PR"
+        },
+        "itens": [
+            {
+                "produtoId": 2,
+                "nome": "Halo 3",
+                "imagem": "https://lojavirtualcdist.vercel.app/Halo%203.webp",
+                "quantidade": 1,
+                "precoUnitario": 50.00,
+                "desconto": 0.00,
+                "precoFinal": 50.00,
+                "subtotal": 50.00
+            }
+        ],
+        "frete": 0.00,
+        "total": 50.00
+    },
+    {
+        "id": 1,
+        "data": "2026-10-01T10:00:00",
+        "status": "PENDENTE",
+        "metodoPagamento": "PIX",
+        "endereco": {
+            "cep": "85580000",
+            "logradouro": "Rua A",
+            "numero": "10",
+            "complemento": null,
+            "bairro": "Centro",
+            "cidade": "Itapejara d'Oeste",
+            "estado": "PR"
+        },
+        "itens": [
+            {
+                "produtoId": 1,
+                "nome": "God of War Ragnarök",
+                "imagem": "https://lojavirtualcdist.vercel.app/God_of_War_Ragnar%C3%B6k_capa.webp",
+                "quantidade": 2,
+                "precoUnitario": 100.00,
+                "desconto": 0.10,
+                "precoFinal": 90.00,
+                "subtotal": 180.00
+            },
+            {
+                "produtoId": 2,
+                "nome": "Halo 3",
+                "imagem": "https://lojavirtualcdist.vercel.app/Halo%203.webp",
+                "quantidade": 1,
+                "precoUnitario": 0.00,
+                "desconto": 0.00,
+                "precoFinal": 0.00,
+                "subtotal": 0.00
+            }
+        ],
+        "frete": 10.00,
+        "total": 190.00
     }
 ]
 ```
@@ -337,38 +427,32 @@ GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
 
 ```JSON
 {
-    "id": 10,
-    "data": "2026-10-06T17:45:00",
-    "status": "ENVIADO",
+    "id": 3,
+    "data": "2026-10-05T09:00:00",
+    "status": "PENDENTE",
     "metodoPagamento": "PIX",
     "endereco": {
-        "id": 1,
-        "cep": "85501-000",
-        "logradouro": "Rua Tocantins",
-        "numero": "120",
-        "complemento": "Apto 2",
+        "cep": "85580000",
+        "logradouro": "Rua A",
+        "numero": "10",
+        "complemento": null,
         "bairro": "Centro",
-        "cidade": "Pato Branco",
+        "cidade": "Itapejara d'Oeste",
         "estado": "PR"
     },
     "itens": [
         {
-            "produtoId": 4,
-            "nome": "Marvel's Spider-Man 2",
-            "imagem": "https://lojavirtualcdist.vercel.app/spider-man-2-capa.webp",
+            "produtoId": 2,
+            "nome": "Halo 3",
+            "imagem": "https://lojavirtualcdist.vercel.app/Halo%203.webp",
             "quantidade": 1,
-            "precoUnitario": 254.91,
-            "subtotal": 254.91
-        },
-        {
-            "produtoId": 7,
-            "nome": "Super Mario Odyssey",
-            "imagem": "https://lojavirtualcdist.vercel.app/super-mario-odyssey-capa.webp",
-            "quantidade": 2,
-            "precoUnitario": 349.99,
-            "subtotal": 699.98
+            "precoUnitario": 50.00,
+            "desconto": 0.00,
+            "precoFinal": 50.00,
+            "subtotal": 50.00
         }
     ],
-    "total": 954.89
+    "frete": 0.00,
+    "total": 50.00
 }
 ```
