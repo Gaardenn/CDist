@@ -69,4 +69,12 @@ public class Pedido {
     @Column(precision = 10, scale = 2)
     private BigDecimal total;
 
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<PedidoProduto> itens = new ArrayList<>();
+
+    public void adicionarItem(PedidoProduto item) {
+        item.setPedido(this);
+        itens.add(item);
+    }
 }
