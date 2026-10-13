@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
+public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     @EntityGraph(attributePaths = {"itens", "itens.produto"})
     List<Pedido> findByUsuarioEmailOrderByDataDesc(String email);
 
