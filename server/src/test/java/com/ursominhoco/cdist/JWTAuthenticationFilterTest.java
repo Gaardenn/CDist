@@ -36,7 +36,7 @@ public class JWTAuthenticationFilterTest {
     }
 
     @Test
-    public void postUsuarios_quandoSenhaErrada_recebe401() {
+    public void postUsuarios_quandoSenhaErrada_recebeUNAUTHORIZED() {
         Map<String, String> credenciais = Map.of(
                 "email", "teste@teste.com",
                 "senha", "TesteErrado1"
@@ -49,7 +49,7 @@ public class JWTAuthenticationFilterTest {
     }
 
     @Test
-    public void postUsuarios_quandoEmailNaoExiste_recebe401() {
+    public void postUsuarios_quandoEmailNaoExiste_recebeUNAUTHORIZED() {
         Map<String, String> credenciais = Map.of(
                 "email", "testenaoexiste@teste.com",
                 "senha", "Teste1"
