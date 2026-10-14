@@ -1,9 +1,11 @@
 package com.ursominhoco.cdist.controller;
 
+import com.ursominhoco.cdist.dto.PedidoRequestDTO;
 import com.ursominhoco.cdist.dto.PedidoResponseDTO;
 import com.ursominhoco.cdist.entity.Pedido;
 import com.ursominhoco.cdist.mapper.PedidoMapper;
 import com.ursominhoco.cdist.service.PedidoService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,5 +38,12 @@ public class PedidoController {
     public ResponseEntity<PedidoResponseDTO> obterPorId(@PathVariable Long id, @AuthenticationPrincipal UserDetails usuario) {
         Pedido pedido = pedidoService.obterPorId(id, usuario.getUsername());
         return ResponseEntity.status(HttpStatus.OK).body(pedidoMapper.paraDto(pedido));
+    }
+
+    @PostMapping
+    public ResponseEntity<PedidoResponseDTO> criar(@RequestBody @Valid PedidoRequestDTO pedidoRequestDTO,
+                                                   @AuthenticationPrincipal UserDetails usuario) {
+        Pedido pedido = pedidoService.criar(pedidoRequestDTO, usuario.getUsername());
+        return ResponseEntity.status(HttpStatus.CREATED).body(pedidoMapper.paraDto(pedido));
     }
 }
