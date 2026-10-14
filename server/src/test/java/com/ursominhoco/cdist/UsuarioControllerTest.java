@@ -153,6 +153,18 @@ public class UsuarioControllerTest {
         assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
     }
 
+    @Test
+    public void postUsuario_quandoEmailDuplicado_recebeCONFLICT() {
+        Usuario usuario = criarUsuarioValido();
+        Usuario usuario2 = criarUsuarioValido();
+
+        ResponseEntity<Object> resposta = testRestTemplate.postForEntity(API_USUARIO, usuario, Object.class);
+        ResponseEntity<Object> resposta2 = testRestTemplate.postForEntity(API_USUARIO, usuario2, Object.class);
+
+        assertThat(resposta.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(resposta2.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+    }
+
     private Usuario criarUsuarioValido() {
         return Usuario.builder().nome("Teste Teste").email("teste@teste.com").senha("Teste1235").build();
     }
