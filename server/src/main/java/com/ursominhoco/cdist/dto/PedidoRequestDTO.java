@@ -2,6 +2,7 @@ package com.ursominhoco.cdist.dto;
 
 import com.ursominhoco.cdist.enums.MetodoPagamento;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +20,7 @@ public class PedidoRequestDTO {
     @NotNull
     private MetodoPagamento metodoPagamento;
 
-    @NotNull
+    @NotEmpty
     @Valid
     private List<ItemPedidoRequestDTO> itens;
 }
