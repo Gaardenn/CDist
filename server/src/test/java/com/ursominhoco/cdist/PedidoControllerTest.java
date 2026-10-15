@@ -55,6 +55,16 @@ public class PedidoControllerTest {
     }
 
     @Test
+    public void postPedidos_semToken_recebeUNAUTHORIZED() {
+        Long enderecoQualquer = 123L;
+        PedidoRequestDTO pedido = criarPedidoValido(enderecoQualquer);
+
+        ResponseEntity<Object> response = testRestTemplate.postForEntity(API_PEDIDOS, pedido, Object.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
+    }
+
+    @Test
     public void postPedidos_quandoPedidoEValido_recebeCREATED() {
         String token = cadastrarELogar("teste@teste.com");
         Long enderecoId = criarEndereco(token);
