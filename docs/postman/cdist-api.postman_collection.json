@@ -1,0 +1,789 @@
+{
+    "info": {
+        "name": "CDist API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "auth": {
+        "type": "bearer",
+        "bearer": [
+            {
+                "key": "token",
+                "value": "{{token}}",
+                "type": "string"
+            }
+        ]
+    },
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": "http://localhost:8080"
+        },
+        {
+            "key": "emailUsuario",
+            "value": "usuario@teste.com"
+        },
+        {
+            "key": "senhaUsuario",
+            "value": "Teste1235"
+        },
+        {
+            "key": "token",
+            "value": ""
+        },
+        {
+            "key": "produtoId",
+            "value": "1"
+        },
+        {
+            "key": "enderecoId",
+            "value": "1"
+        },
+        {
+            "key": "pedidoId",
+            "value": "1"
+        }
+    ],
+    "item": [
+        {
+            "name": "Autenticação",
+            "item": [
+                {
+                    "name": "Registrar",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/usuarios/cadastro",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "usuarios",
+                                "cadastro"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"nome\": \"Usuario\",\n  \"email\": \"{{emailUsuario}}\",\n  \"senha\": \"{{senhaUsuario}}\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 201\", () => pm.response.to.have.status(201));"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Registrar (e-mail duplicado)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/usuarios/cadastro",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "usuarios",
+                                "cadastro"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"nome\": \"Usuario Duplicado\",\n  \"email\": \"{{emailUsuario}}\",\n  \"senha\": \"{{senhaUsuario}}\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 409\", () => pm.response.to.have.status(409));"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Login",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/usuarios/login",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "usuarios",
+                                "login"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"{{emailUsuario}}\",\n  \"senha\": \"{{senhaUsuario}}\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                                    "const json = pm.response.json();",
+                                    "pm.test(\"Resposta contém token\", () => pm.expect(json.token).to.be.a(\"string\"));",
+                                    "pm.collectionVariables.set(\"token\", json.token);"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Login (senha errada)",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/usuarios/login",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "usuarios",
+                                "login"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"email\": \"{{emailUsuario}}\",\n  \"senha\": \"Teste123\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 401\", () => pm.response.to.have.status(401));"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Categorias",
+            "item": [
+                {
+                    "name": "Listar categorias",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/categorias",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "categorias"
+                            ]
+                        },
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                                    "pm.test(\"É uma lista\", () => pm.expect(pm.response.json()).to.be.an(\"array\"));"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Produtos",
+            "item": [
+                {
+                    "name": "Listar produtos",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/produtos?page=0&size=30",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "produtos"
+                            ],
+                            "query": [
+                                {
+                                    "key": "page",
+                                    "value": "0",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "size",
+                                    "value": "30",
+                                    "disabled": false
+                                }
+                            ]
+                        },
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Produto por ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/produtos/{{produtoId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "produtos",
+                                "{{produtoId}}"
+                            ]
+                        },
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Produto inexistente",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/produtos/99999",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "produtos",
+                                "99999"
+                            ]
+                        },
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 404\", () => pm.response.to.have.status(404));"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Endereços",
+            "item": [
+                {
+                    "name": "Criar endereço",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/enderecos",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "enderecos"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"cep\": \"85501000\",\n  \"logradouro\": \"Rua das Flores\",\n  \"numero\": \"123\",\n  \"complemento\": \"Apto 4\",\n  \"bairro\": \"Centro\",\n  \"cidade\": \"Pato Branco\",\n  \"estado\": \"PR\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+                                    "const json = pm.response.json();",
+                                    "if (json.id) pm.collectionVariables.set(\"enderecoId\", json.id);"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Listar endereços",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/enderecos",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "enderecos"
+                            ]
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Listar endereços sem token",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/enderecos",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "enderecos"
+                            ]
+                        },
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 401\", () => pm.response.to.have.status(401));"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Endereço por ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/enderecos/{{enderecoId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "enderecos",
+                                "{{enderecoId}}"
+                            ]
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Endereço inexistente",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/enderecos/99999",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "enderecos",
+                                "99999"
+                            ]
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 404\", () => pm.response.to.have.status(404));"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Pedidos",
+            "item": [
+                {
+                    "name": "Criar pedido",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/pedidos",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "pedidos"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"enderecoId\": {{enderecoId}},\n  \"metodoPagamento\": \"PIX\",\n  \"itens\": [\n  {  \"produtoId\": {{produtoId}}, \"quantidade\": 2 }\n  ]\n  }",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+                                    "const json = pm.response.json();",
+                                    "if (json.id) pm.collectionVariables.set(\"pedidoId\", json.id);",
+                                    "pm.test(\"Pedido tem total\", () => pm.expect(json.total).to.exist);"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Criar pedido sem token",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/pedidos",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "pedidos"
+                            ]
+                        },
+                        "auth": {
+                            "type": "noauth"
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"enderecoId\": {{enderecoId}},\n  \"metodoPagamento\": \"PIX\",\n  \"itens\": [\n  {  \"produtoId\": {{produtoId}}, \"quantidade\": 3 }\n  ]\n  }",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 401\", () => pm.response.to.have.status(401));"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Criar pedido com endereço inexistente",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{baseUrl}}/pedidos",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "pedidos"
+                            ]
+                        },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"enderecoId\": 99999,\n  \"metodoPagamento\": \"PIX\",\n  \"itens\": [\n  {  \"produtoId\": {{produtoId}}, \"quantidade\": 4 }\n  ]\n  }",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 404\", () => pm.response.to.have.status(404));"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Listar pedidos",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/pedidos",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "pedidos"
+                            ]
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Listar pedidos sem token",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/pedidos",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "pedidos"
+                            ]
+                        },
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 401\", () => pm.response.to.have.status(401));"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Pedido por ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/pedidos/{{pedidoId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "pedidos",
+                                "{{pedidoId}}"
+                            ]
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Pedido inexistente",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/pedidos/99999",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "pedidos",
+                                "99999"
+                            ]
+                        }
+                    },
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "type": "text/javascript",
+                                "exec": [
+                                    "pm.test(\"Status 404\", () => pm.response.to.have.status(404));"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
