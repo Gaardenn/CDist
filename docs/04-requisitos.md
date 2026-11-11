@@ -51,3 +51,15 @@ As listas de informações extensas devem ser todas paginadas pelo back-end ao c
 
 **RNF04 - Funciona em tela de celular**
 O site deve ser 100% responsivo e funcional para celulares de tamanhos variados de tela. Nesses dispositivos, todas as funções devem ser utilizáveis e o usuário não deve ter dificuldade para entender o layout.
+
+# 3 Regras de Negócio
+
+| ID | Regra | Validada em | Requisito |
+| --- | --- | --- | --- |
+| RN01 | Item digital não paga frete, e pedido só com itens digitais tem frete zero | Logística, `POST /frete/cotacao` | RF12 |
+| RN02 | Pedido não pode ter quantidade maior que o estoque. Se faltar um item, o pedido inteiro é recusado | API, `POST /pedidos` (409) | RF05 |
+| RN03 | Total e frete são calculados só no servidor | API, `PedidoService` | RF05 |
+| RN04 | Endereço, preço e desconto são copiados para o pedido, e alterá-los depois não muda pedidos antigos | API, `PedidoService` | RF07 |
+| RN05 | Visitante sem login monta o carrinho, que continua igual depois de recarregar a página ou fazer login | Client, carrinho no localStorage e login no `/checkout` | RF06 |
+| RN06 | Não pode existir duas contas com o mesmo e-mail | API, `POST /usuarios/cadastro` (409) | RF04 |
+| RN07 | O usuário só vê e usa os próprios endereços e pedidos | API, `/enderecos` e `/pedidos` (404 para dado de outro usuário) | RF07, RF10 |
