@@ -50,7 +50,7 @@ Os estados de todas as telas devem ser claros. Mostrando "Carregando", "Não Enc
 As listas de informações extensas devem ser todas paginadas pelo back-end ao chegar no front-end. A lista de Produtos precisa ser paginada.
 
 **RNF04 - Funciona em tela de celular**
-O site deve ser 100% responsivo e funcional para celulares de tamanhos variados de tela. Nesses dispositivos, todas as funções devem ser utilizáveis e o usuário não deve ter dificuldade para entender o layout.
+As telas de compra devem ser usáveis em celulares de tamanhos variados de tela. Nesses dispositivos, todas as funções devem ser utilizáveis e o usuário não deve ter dificuldade para entender o layout.
 
 # 3 Regras de Negócio
 
