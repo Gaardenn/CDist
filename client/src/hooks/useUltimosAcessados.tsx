@@ -1,7 +1,8 @@
+import type { Jogo } from "@/commons/types";
 import { useState, useEffect } from "react"
 
 export function useUltimosAcessados(){
-    const [queue, setQueue] = useState(()=>{
+    const [queue, setQueue] = useState<number[]>(()=>{
         return JSON.parse(localStorage.getItem("fila")) || [];
     })
 
@@ -9,14 +10,15 @@ export function useUltimosAcessados(){
         localStorage.setItem("fila", JSON.stringify(queue));
     }, [queue]);
 
-    const adicionarProdutoFila = (produto) => {
-        const temp = queue.filter((id) => id !== produto.id);
-        let newQueue = [...temp, produto.id];
+    const adicionarProdutoFila = (produto: Jogo) => {
+        const produtoId = Number(produto.id);
+        const temp = queue.filter((id) => id !== produtoId);
+        let newQueue = [...temp, produtoId];
         if (newQueue.length > 5) {
             newQueue = newQueue.slice(newQueue.length - 5);
         }
         setQueue(newQueue);
     }
 
-    return {queue, adicionarProdutoFila};
+    return { queue, adicionarProdutoFila };
 }

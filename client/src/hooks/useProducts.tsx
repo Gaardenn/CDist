@@ -1,16 +1,17 @@
 import { useState, useEffect, useCallback } from "react";
 import { ProductService } from '../services/ProductService';
+import type { Jogo } from "@/commons/types";
 
 export function useProducts() {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [products, setProducts] = useState<Jogo[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
 
-    const loadProducts = useCallback(async () => {
+    const loadProducts = useCallback(async (): Promise<void> => {
         setLoading(true);
         setError(null);
         try {
-            const data = await ProductService();
+            const data: Jogo[] = await ProductService();
             setProducts(data);
         } catch (err) {
             console.error("Erro ao carregar produtos ", err);
@@ -24,7 +25,7 @@ export function useProducts() {
         loadProducts();
     }, [loadProducts]);
 
-    const getProduct = (productId) => {
+    const getProduct = (productId: Jogo["id"]): Jogo | undefined => {
         return products.find((product) => product.id === productId);
     }
 

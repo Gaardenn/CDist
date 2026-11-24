@@ -1,15 +1,23 @@
+import type { CartItem, Jogo } from "@/commons/types";
 import { useState, useEffect } from "react"
 
 export function useCart() {
-    const [cart, setCart] = useState(() => {
-        return JSON.parse(localStorage.getItem("carrinho")) || [];
+    const [cart, setCart] = useState<CartItem[]>(() => {
+        if (typeof window === "undefined") return [];
+
+        try {
+            const salvo = localStorage.getItem("carrinho");
+            return salvo ? JSON.parse(salvo) as CartItem[] : [];
+        } catch {
+            return [];
+        }
     });
 
     useEffect(() => {
         localStorage.setItem("carrinho", JSON.stringify(cart));
     }, [cart]);
 
-    const adicionarProduto = (produto, quant) => {
+    const adicionarProduto = (produto: Jogo, quant: number): boolean => {
         const existe = cart.find((p) => p.id === produto.id);
 
         if (existe) {
@@ -20,44 +28,44 @@ export function useCart() {
             return false;
         } else {
             setCart([...cart, { ...produto, quantidade: quant }]);
-            
+
             return true;
         }
-    } 
+    }
 
-    const adicionarUnidade = (produto) => {
+    const adicionarUnidade = (produto: CartItem) => {
         setCart(cart.map((p) => p.id === produto.id ? { ...p, quantidade: p.quantidade + 1 } : p));
     }
 
-    const removerUnidade = (produto) => {
+    const removerUnidade = (produto: CartItem) => {
         setCart(cart.map((p) => p.id === produto.id ? { ...p, quantidade: p.quantidade - 1 } : p));
     }
 
-    const removerItem = (produto) => {
+    const removerItem = (produto: CartItem) => {
         setCart(cart.filter(p => p.id !== produto.id));
     }
 
-    const marcar = (produto) => {
+    const marcar = (produto: CartItem) => {
         setCart(cart.map((p) => p.id === produto.id ? { ...p, marcado: !produto.marcado} : p));
     }
 
-    const todosMarcados = () => {
+    const todosMarcados = (): boolean => {
         let todos = true;
-        
+
         cart.map((p) => p.marcado === false ? todos = false : true);
 
         return todos;
     }
 
-    const marcarTudo = (boolean) => {
+    const marcarTudo = (boolean: boolean) => {
         cart.map((p) => p.marcado = boolean);
     }
 
-    const presentear = (produto) => {
+    const presentear = (produto: CartItem) => {
         setCart(cart.map((p) => p.id === produto.id ? { ...p, presente: !produto.presente } : p));
     }
 
-    const quantMarcados = () => {
+    const quantMarcados = (): number => {
         let quant = 0;
 
         cart.map((p) => p.marcado === true ? quant=quant+p.quantidade : quant);
@@ -65,7 +73,7 @@ export function useCart() {
         return quant;
     }
 
-    const quantTotal = () => {
+    const quantTotal = (): number => {
         let quant = 0;
 
         cart.map((p) => quant = quant + p.quantidade);
@@ -73,7 +81,7 @@ export function useCart() {
         return quant;
     }
 
-    const calcularSubtotal = () => {
+    const calcularSubtotal = (): number => {
         let subtotal = 0;
 
         cart.map((p) => p.marcado === true ? subtotal += p.preco * p.quantidade : subtotal);
@@ -81,7 +89,7 @@ export function useCart() {
         return subtotal;
     }
 
-    const calcularDescontoTotal = () => {
+    const calcularDescontoTotal = (): number => {
         let desconto = 0;
 
         cart.map((p) => p.marcado === true ? desconto += p.desconto * p.quantidade : desconto);
@@ -89,7 +97,7 @@ export function useCart() {
         return desconto;
     }
 
-    const calcularFreteTotal = () => {
+    const calcularFreteTotal = (): number => {
         let frete = 0;
 
         const itensFisicos = cart.filter((p) => p.marcado === true && p.midia === "Física");
