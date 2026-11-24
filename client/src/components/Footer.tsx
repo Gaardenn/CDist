@@ -1,4 +1,3 @@
-import React from "react"
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCreditCard, faBarcode } from "@fortawesome/free-solid-svg-icons";
@@ -21,15 +20,15 @@ function Footer() {
                         <ul className="footer-body-info-column-list">
                             <li className="footer-body-info-column-list-item">
                                 <FontAwesomeIcon icon={faCreditCard} className="footer-body-info-column-list-item-icon" />
-                                <p className="footer-body-info-column-list-text">Cartão de crédito</p> 
+                                <p className="footer-body-info-column-list-text">Cartão de crédito</p>
                             </li>
                             <li className="footer-body-info-column-list-item">
                                 <FontAwesomeIcon icon={faBarcode} className="footer-body-info-column-list-item-icon" />
-                                <p className="footer-body-info-column-list-text">Boleto</p> 
+                                <p className="footer-body-info-column-list-text">Boleto</p>
                             </li>
                             <li className="footer-body-info-column-list-item">
                                 <FontAwesomeIcon icon={faPix} className="footer-body-info-column-list-item-icon" />
-                                <p className="footer-body-info-column-list-text">Pix</p> 
+                                <p className="footer-body-info-column-list-text">Pix</p>
                             </li>
                         </ul>
                     </div>
