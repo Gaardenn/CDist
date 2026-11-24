@@ -18,7 +18,7 @@ export async function request<T> (
 
 export function toErrorResponse<T>(err: unknown, failMessage: string): IResponse<T> {
     if (axios.isAxiosError<IApiError>(err)) {
-        if (err.message) {
+        if (err.response) {
             return {
                 status: err.response.status,
                 success: false,
