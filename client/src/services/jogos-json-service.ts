@@ -1,6 +1,10 @@
 import type { Jogo } from "@/commons/types";
 
-export async function ProductService(): Promise<Jogo[]> {
+/**
+ * @deprecated Lê o catálogo antigo do json
+ * Some quando o catálogo vier da API.
+ */
+export async function carregarJogosLocal(): Promise<Jogo[]> {
     const response = await fetch("/jogos.json");
 
     if (!response.ok) {

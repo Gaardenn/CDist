@@ -17,7 +17,7 @@ export interface IApiError {
 }
 
 /** Page<T> do Spring */
-export interface IPageModel<T> {
+export interface IPagedModel<T> {
     content: T[];
     page: {
         size: number;

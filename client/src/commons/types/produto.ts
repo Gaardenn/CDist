@@ -27,7 +27,7 @@ export interface ProdutoResumoDTO {
 }
 
 /** Jogo completo (GET /produtos/{id}) */
-export interface ProdutoDetalhesDTO {
+export interface ProdutoDetalheDTO {
     id: number;
     nome: string;
     categoria: CategoriaResumoDTO;

@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { ProductService } from '../services/ProductService';
+import { carregarJogosLocal } from '@/services/jogos-json-service';
 import type { Jogo } from "@/commons/types";
 
 export function useProducts() {
@@ -11,7 +11,7 @@ export function useProducts() {
         setLoading(true);
         setError(null);
         try {
-            const data: Jogo[] = await ProductService();
+            const data: Jogo[] = await carregarJogosLocal();
             setProducts(data);
         } catch (err) {
             console.error("Erro ao carregar produtos ", err);
