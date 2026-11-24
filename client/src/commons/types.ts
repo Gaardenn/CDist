@@ -13,6 +13,8 @@ export type Jogo = {
     data: string;
     modo: string;
     descricao: string;
+    peso?: number;
+    volume?: number;
 };
 
 export type CartItem = Jogo & {
