@@ -10,8 +10,22 @@
 - Título do Pull Request seguindo padrão de commits `tipo: descrição` (feat, fix, docs, test, chore, refactor).
 
 ## Definition of Done
+
 Uma tarefa só vai para "Feito" no Kanban quando:
 1. Compila e os testes passam (CI verde)
 2. Testado manualmente no Postman (caminho feliz + 1 erro esperado)
 3. PR aprovado pelo colega
 4. Endpoint documentado em docs/02-apli.md (rota, exemplo de request e response)
+
+## Retrospectiva
+
+- Funcionou:
+    - Divisão de tarefas por carga de trabalho
+    - Metas bem definidas e prazos (apesar dos atrasos)
+- Atrasou
+    - Pouco conhecimento do assunto antes de tentar fazer efetivamente
+    - Pensar demais em partes que não eram importantes para a entrega
+    - Não planejar o suficiente se a parte de um era pré-requisito da de outro
+- Mudar
+    - Ter dailies assíncronas concretas
+    - Diminuir a distância das tarefas
