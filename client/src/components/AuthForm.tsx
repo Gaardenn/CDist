@@ -3,8 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "../context/ToastContext";
 import "../styles/Autenticacao.css";
 
-export default function AuthForm({ initialMode = "login" }) {
-    const [mode, setMode] = useState(initialMode);
+type Mode = "login" | "signup";
+
+type AuthFormProps = {
+    initialMode?: Mode;
+};
+
+export default function AuthForm({ initialMode = "login" }: AuthFormProps) {
+    const [mode, setMode] = useState<Mode>(initialMode);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -14,12 +20,12 @@ export default function AuthForm({ initialMode = "login" }) {
 
     const isLogin = mode === "login";
 
-    function trocarModo(novoModo) {
+    function trocarModo(novoModo: Mode) {
         setErro("");
         setMode(novoModo);
     }
 
-    function handleSubmit(e) {
+    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         if (email === "") {

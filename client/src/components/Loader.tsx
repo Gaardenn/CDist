@@ -1,6 +1,10 @@
 import "../styles/Loader.css";
 
-export function Loader({ mensagem = "Carregando..." }) {
+type LoaderProps = {
+    mensagem?: string;
+}
+
+export function Loader({ mensagem = "Carregando..." }: LoaderProps) {
     return (
         <div className="loader-container">
             <div className="loader-spinner"></div>

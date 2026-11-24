@@ -2,7 +2,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../styles/Loader.css";
 import { faExclamation } from "@fortawesome/free-solid-svg-icons";
 
-export function ErrorState({ mensagem = "Algo deu errado.", onRetry }) {
+type ErrorStateProps = {
+    mensagem?: string;
+    onRetry?: () => void;
+}
+
+export function ErrorState({ mensagem = "Algo deu errado.", onRetry }: ErrorStateProps) {
     return (
         <div className="loader-container">
             <div className="error-icon"><FontAwesomeIcon icon={faExclamation} /></div>

@@ -1,15 +1,20 @@
+import type { Jogo } from '@/commons/types';
 import { useProducts } from '../hooks/useProducts';
 import '../styles/UltimosAcessados.css';
 import { GameCard } from './GameCard';
 
-export function UltimosAcessados({ queue = [] }) {
+type UltimosAcessadosProps = {
+    queue?: number[];
+}
+
+export function UltimosAcessados({ queue = [] }: UltimosAcessadosProps) {
     const {getProduct} = useProducts();
 
     const produtos = queue
         .slice()
         .reverse()
         .map((id) => getProduct(id))
-        .filter(Boolean);
+        .filter((p): p is Jogo => p !== undefined);
 
     if (produtos.length === 0) {
         return null;

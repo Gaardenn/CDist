@@ -1,11 +1,20 @@
 import "../styles/ProductItem.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
 import { formatarPreco } from '../utils/formatarPreco';
+import type { CartItem } from '@/commons/types';
 
-export function ProductItem({ produto, adicionarUnidade, removerUnidade, removerItem, marcar, presentear }) {
-    const { imagem, nome, plataforma, dev, pub, status, midia, quantidade, marcado, preco, presente } = produto;
+type ProductItemProps = {
+    produto: CartItem;
+    adicionarUnidade: (produto: CartItem) => void;
+    removerUnidade: (produto: CartItem) => void;
+    removerItem: (produto: CartItem) => void;
+    marcar: (produto: CartItem) => void;
+    presentear: (produto: CartItem) => void;
+}
+
+export function ProductItem({ produto, adicionarUnidade, removerUnidade, removerItem, marcar, presentear }: ProductItemProps) {
+    const { imagem, nome, plataforma, dev, pub, midia, quantidade, marcado, preco, presente } = produto;
 
     return (
         <>

@@ -4,8 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faCartShopping, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import { useProducts } from '../hooks/useProducts';
+import type { Jogo, CartItem } from '@/commons/types';
 
-export default function Navbar({ quantTotal, cart }) {
+type NavbarProps = {
+    quantTotal: () => number;
+    cart: CartItem[];
+}
+
+export default function Navbar({ quantTotal, cart }: NavbarProps) {
     const [quant, setQuant] = useState(() => quantTotal());
     const [termo, setTermo] = useState("");
     const { products } = useProducts();
@@ -25,7 +31,7 @@ export default function Navbar({ quantTotal, cart }) {
             p.tags?.some(t => t.toLowerCase().includes(termoLimpo))
         ).slice(0, 6);
 
-    function irParaProduto(id) {
+    function irParaProduto(id: Jogo["id"]) {
         setTermo("");
         navigate(`/produto/${id}`);
     }

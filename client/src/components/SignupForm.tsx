@@ -3,7 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import "../styles/Autenticacao.css";
 import { useToast } from '../context/ToastContext';
 
-function SignupForm({ onToggle }) {
+type SignupFormProps = {
+    onToggle: () => void;
+}
+
+function SignupForm({ onToggle }: SignupFormProps) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -11,7 +15,7 @@ function SignupForm({ onToggle }) {
     const { showToast } = useToast();
     const navigate = useNavigate();
 
-    function handleSubmit(e) {
+    function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         if (email === "") {
@@ -91,8 +95,8 @@ function SignupForm({ onToggle }) {
                     Ao continuar, você concorda com os <Link to="/informacoes">Termos de Uso</Link> e <Link to="/informacoes">Política de Privacidade</Link>.
                 </p>
 
-                <button 
-                    type="button" 
+                <button
+                    type="button"
                     className="auth-create-account-button"
                     onClick={onToggle}
                 >

@@ -1,15 +1,20 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight, faDolly, faShieldHalved } from '@fortawesome/free-solid-svg-icons';
 import '../styles/ProductDetails.css';
+import type { Jogo } from '@/commons/types';
 
-export function ProductDetails({produto}) {
+type ProductDetailsProps = {
+    produto: Jogo;
+}
+
+export function ProductDetails({produto}: ProductDetailsProps) {
     const { imagem, nome, dev, pub, midia, classificacao, data, modo, tags, descricao } = produto;
 
     return (
         <div className="product-details-container">
             <div className="product-gallery-panel">
                 <div className="main-image-frame">
-                    <img src={`/${imagem}`} alt="Capa do jogo God of War Ragnarök" className="main-image" />
+                    <img src={`/${imagem}`} alt={`Capa do jogo ${nome}`} className="main-image" />
                 </div>
 
                 <div className="thumbnail-gallery">

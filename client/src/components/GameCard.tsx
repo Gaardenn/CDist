@@ -1,10 +1,19 @@
 import { Link } from "react-router-dom";
 import "../styles/GameCard.css";
+import type { Jogo } from "@/commons/types";
 
-export function GameCard({ jogo = {} }) {
-    const precoFinal = (jogo.preco || 0) - ((jogo.preco || 0) * ((jogo.desconto || 0) / 100));
+type GameCardProps = {
+    jogo: Jogo;
+}
+
+export function GameCard({ jogo }: GameCardProps) {
+    if (!jogo) return null;
+
+    const desconto = jogo.desconto ?? 0;
+    const precoFinal = jogo.preco - jogo.preco * (desconto / 100);
 
     const imagemSrc = jogo.imagem?.startsWith("/") ? jogo.imagem : `/${jogo.imagem || ""}`;
+
     let plataformaClass = "default";
     const plataformaLower = (jogo.plataforma || "").toLowerCase();
     if (plataformaLower.includes("playstation")) plataformaClass = "playstation";
@@ -28,7 +37,7 @@ export function GameCard({ jogo = {} }) {
                     <div className="game-card-pricing">
                         <div className="game-card-discount-info">
                             <span className="game-card-original-price">
-                                A partir de {(jogo.desconto || 0) > 0 && <strike>R$ {(jogo.preco || 0).toFixed(2).replace('.', ',')}</strike>}
+                                A partir de {(jogo.desconto || 0) > 0 && <del>R$ {(jogo.preco || 0).toFixed(2).replace('.', ',')}</del>}
                             </span>
                             {(jogo.desconto || 0) > 0 && (
                                 <span className="game-card-discount-badge">-{jogo.desconto}%</span>

@@ -1,21 +1,28 @@
 import { useState } from 'react';
 import { formatarPreco } from '../utils/formatarPreco';
 import '../styles/ProductPrice.css';
+import type { Jogo } from '@/commons/types';
 
-export function ProductPrice({produto, adicionarProduto}) {
+type ProductPriceProps = {
+    produto: Jogo;
+    adicionarProduto: (produto: Jogo, quant: number) => void;
+}
+
+export function ProductPrice({produto, adicionarProduto}: ProductPriceProps) {
 
     const [quant, setQuant] = useState(1);
-    const { preco } = produto;
+    const { preco, desconto = 0 } = produto;
+    const precoFinal = preco - preco * (desconto / 100);
 
     return (
         <div className="product-price-container">
             <section className="purchase-card">
                 <div className="price-headline">
                     <div className="price-label">R$</div>
-                    <div className="price-value">{formatarPreco(preco)}</div>
+                    <div className="price-value">{formatarPreco(precoFinal)}</div>
                     <div className="discount-info">à vista</div>
                 </div>
-                <div className="installments-info">ou por R$ {formatarPreco(preco/10)}/mês <br /> em 12x</div>
+                <div className="installments-info">ou por R$ {formatarPreco(precoFinal/10)}/mês <br /> em 12x</div>
 
                 <div className="delivery-info">
                     <div className="delivery-row">
