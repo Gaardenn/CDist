@@ -27,17 +27,11 @@ type CarrinhoProps = {
 }
 
 export function Carrinho({cart, adicionarUnidade, removerUnidade, removerItem, marcar, todosMarcados, marcarTudo, presentear, quantMarcados, quantTotal, calcularSubtotal, calcularDescontoTotal, calcularFreteTotal}: CarrinhoProps) {
-
     const [todos, setTodos] = useState<boolean>(() => todosMarcados());
     const [quant, setQuant] = useState<number>(() => quantMarcados());
     const [subtotal, setSubtotal] = useState<number>(() => calcularSubtotal());
     const [descontoTotal, setDescontoTotal] = useState<number>(() => calcularDescontoTotal());
     const [frete, setFrete] = useState<number>(() => calcularFreteTotal());
-    const [total, setTotal] = useState<number>(0);
-
-    function calcularTotal(): number {
-        return subtotal - descontoTotal + frete;
-    }
 
     useEffect(() => {
     }, []);
@@ -48,7 +42,6 @@ export function Carrinho({cart, adicionarUnidade, removerUnidade, removerItem, m
         setSubtotal(calcularSubtotal());
         setDescontoTotal(calcularDescontoTotal());
         setFrete(calcularFreteTotal());
-        setTotal(calcularTotal());
     }, [cart]);
 
     return (
@@ -70,7 +63,7 @@ export function Carrinho({cart, adicionarUnidade, removerUnidade, removerItem, m
                             <label className="body-content-footer-check">
                                 <input type="checkbox" onChange={() => {
                                     marcarTudo(!todos); setTodos(!todos); setSubtotal(calcularSubtotal());
-                                    setQuant(quantMarcados()); setDescontoTotal(calcularDescontoTotal()); setFrete(calcularFreteTotal()); setTotal(calcularTotal());
+                                    setQuant(quantMarcados()); setDescontoTotal(calcularDescontoTotal()); setFrete(calcularFreteTotal());
                                 }} />
                                 <svg className="body-content-footer-checkbox" aria-hidden="true" viewBox="0 0 15 11"
                                     fill="none">
@@ -111,7 +104,7 @@ export function Carrinho({cart, adicionarUnidade, removerUnidade, removerItem, m
                                 <h2 className="body-content-total-value-text">TOTAL</h2>
                                 <p className="body-content-total-value-currency">
                                     R$
-                                    <span className="body-content-total-value-price">{formatarPreco(total)}</span>
+                                    <span className="body-content-total-value-price">{formatarPreco(Math.max(0, subtotal + frete - descontoTotal))}</span>
                                 </p>
                             </div>
                             <Link to="/Autenticacao" className="body-content-total-button">Comprar</Link>
