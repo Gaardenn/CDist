@@ -1,8 +1,14 @@
+import type { CartItem } from "@/commons/types";
 import Footer from "../components/Footer"
 import Navbar from "../components/Navbar"
 import "../styles/Informacoes.css"
 
-export function Informacoes({quantTotal, cart}) {
+type InformacoesProps = {
+    quantTotal: () => number;
+    cart: CartItem[];
+}
+
+export function Informacoes({quantTotal, cart}: InformacoesProps) {
     return (
         <div>
             <Navbar quantTotal={quantTotal} cart={cart} />

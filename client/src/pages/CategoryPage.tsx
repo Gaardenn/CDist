@@ -6,8 +6,22 @@ import { useProducts } from "../hooks/useProducts";
 import "../styles/CategoryPage.css";
 import { Loader } from "../components/Loader";
 import { ErrorState } from "../components/ErrorState";
+import type { Jogo, CartItem } from "@/commons/types";
 
-const CATEGORIAS = {
+type CategoryPageProps = {
+    quantTotal: () => number;
+    cart: CartItem[];
+};
+
+type Categoria = {
+    titulo: string;
+    subtitulo: string;
+    logo: string;
+    classe: string;
+    filtro: (p: Jogo) => boolean;
+};
+
+const CATEGORIAS: Record<string, Categoria> = {
     playstation: {
         titulo: "PlayStation",
         subtitulo: "Console Sony, do PS1 ao PS5",
@@ -38,10 +52,10 @@ const CATEGORIAS = {
     },
 };
 
-export function CategoryPage({ quantTotal, cart }) {
-    const { slug } = useParams();
+export function CategoryPage({ quantTotal, cart }: CategoryPageProps) {
+    const { slug } = useParams<{ slug: string }>();
     const { products, loading, error, retry } = useProducts();
-    const categoria = CATEGORIAS[slug];
+    const categoria = slug ? CATEGORIAS[slug] : undefined;
 
     if (loading) {
         return (

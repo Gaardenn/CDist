@@ -7,11 +7,22 @@ import { UltimosAcessados } from "../components/UltimosAcessados";
 import { useRef } from "react";
 import { Loader } from "../components/Loader";
 import { ErrorState } from "../components/ErrorState";
+import type { CartItem, Jogo } from "@/commons/types";
 
-export function Home({ quantTotal, cart, queue, products, loading, error, retry }) {
-    const carrosselRef = useRef(null);
+type HomeProps = {
+    quantTotal: () => number;
+    cart: CartItem[];
+    queue: number[];
+    products: Jogo[];
+    loading: boolean;
+    error: string | null;
+    retry: () => Promise<void>;
+};
 
-    function rolarCarrossel(direcao) {
+export function Home({ quantTotal, cart, queue, products, loading, error, retry }: HomeProps) {
+    const carrosselRef = useRef<HTMLDivElement>(null);
+
+    function rolarCarrossel(direcao: "esquerda" | "direita"): void {
         if (!carrosselRef.current) return;
         const largura = carrosselRef.current.clientWidth;
         carrosselRef.current.scrollBy({

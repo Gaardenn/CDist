@@ -3,19 +3,41 @@ import { ProductItem } from "../components/ProductItem";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
-import { useCart } from '../hooks/useCart';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Link } from 'react-router-dom';
 import { formatarPreco } from '../utils/formatarPreco';
+import type { CartItem } from '@/commons/types';
 
-export function Carrinho({cart, adicionarUnidade, removerUnidade, removerItem, marcar, todosMarcados, marcarTudo, presentear, quantMarcados, quantTotal, calcularSubtotal, calcularDescontoTotal, calcularFreteTotal}) {
-    
-    const [todos, setTodos] = useState(() => todosMarcados());
-    const [quant, setQuant] = useState(() => quantMarcados());
-    const [subtotal, setSubtotal] = useState(() => calcularSubtotal());
-    const [descontoTotal, setDescontoTotal] = useState(() => calcularDescontoTotal());
-    const [frete, setFrete] = useState(() => calcularFreteTotal());
+type CarrinhoProps = {
+    cart: CartItem[];
+    adicionarUnidade: (produto: CartItem) => void;
+    removerUnidade: (produto: CartItem) => void;
+    removerItem: (produto: CartItem) => void;
+    marcar: (produto: CartItem) => void;
+    todosMarcados: () => boolean;
+    marcarTudo: (boolean: boolean) => void;
+    presentear: (produto: CartItem) => void;
+    quantMarcados: () => number;
+    quantTotal: () => number;
+    calcularSubtotal: () => number;
+    calcularDescontoTotal: () => number;
+    calcularFreteTotal: () => number;
+
+}
+
+export function Carrinho({cart, adicionarUnidade, removerUnidade, removerItem, marcar, todosMarcados, marcarTudo, presentear, quantMarcados, quantTotal, calcularSubtotal, calcularDescontoTotal, calcularFreteTotal}: CarrinhoProps) {
+
+    const [todos, setTodos] = useState<boolean>(() => todosMarcados());
+    const [quant, setQuant] = useState<number>(() => quantMarcados());
+    const [subtotal, setSubtotal] = useState<number>(() => calcularSubtotal());
+    const [descontoTotal, setDescontoTotal] = useState<number>(() => calcularDescontoTotal());
+    const [frete, setFrete] = useState<number>(() => calcularFreteTotal());
+    const [total, setTotal] = useState<number>(0);
+
+    function calcularTotal(): number {
+        return subtotal - descontoTotal + frete;
+    }
 
     useEffect(() => {
     }, []);
@@ -26,6 +48,7 @@ export function Carrinho({cart, adicionarUnidade, removerUnidade, removerItem, m
         setSubtotal(calcularSubtotal());
         setDescontoTotal(calcularDescontoTotal());
         setFrete(calcularFreteTotal());
+        setTotal(calcularTotal());
     }, [cart]);
 
     return (
@@ -88,7 +111,7 @@ export function Carrinho({cart, adicionarUnidade, removerUnidade, removerItem, m
                                 <h2 className="body-content-total-value-text">TOTAL</h2>
                                 <p className="body-content-total-value-currency">
                                     R$
-                                    <span className="body-content-total-value-price">{formatarPreco(Math.max(0, subtotal + frete - descontoTotal))}</span>
+                                    <span className="body-content-total-value-price">{formatarPreco(total)}</span>
                                 </p>
                             </div>
                             <Link to="/Autenticacao" className="body-content-total-button">Comprar</Link>
@@ -97,7 +120,7 @@ export function Carrinho({cart, adicionarUnidade, removerUnidade, removerItem, m
                             <h2 className="body-content-shipping-header">Calcular frete e entrega:</h2>
                             <form className="body-content-shipping-form">
                                 <div className="body-content-shipping-form-input">
-                                    <label for="cep" className="body-content-shipping-form-input-text">Insira seu CEP</label>
+                                    <label htmlFor="cep" className="body-content-shipping-form-input-text">Insira seu CEP</label>
                                     <input type="text" id="cep" name="cep" placeholder="00000-000" className="body-content-shipping-form-input-field" />
                                 </div>
                                 <div className="body-content-shipping-form-city body-content-shipping-form-text">

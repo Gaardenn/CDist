@@ -8,10 +8,18 @@ import { useProducts } from '../hooks/useProducts';
 import { useParams } from 'react-router-dom';
 import { Loader } from '../components/Loader';
 import { ErrorState } from '../components/ErrorState';
+import type { Jogo, CartItem } from "@/commons/types";
 
-export function ProductPage({adicionarProduto, quantTotal, cart, adicionarProdutoFila}) {
-    const { id } = useParams();
-    const { products, loading, error, retry } = useProducts();
+type ProductPageProps = {
+    adicionarProduto: (produto: Jogo) => void;
+    quantTotal: () => number;
+    cart: CartItem[];
+    adicionarProdutoFila: (produto: Jogo) => void;
+}
+
+export function ProductPage({adicionarProduto, quantTotal, cart, adicionarProdutoFila}: ProductPageProps) {
+    const { id } = useParams<{ id: string }>();
+    const { products, error, retry } = useProducts();
 
     const produto = products.find((p) => p.id === Number(id));
 
