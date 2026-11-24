@@ -11,7 +11,7 @@ import { ErrorState } from '../components/ErrorState';
 import type { Jogo, CartItem } from "@/commons/types";
 
 type ProductPageProps = {
-    adicionarProduto: (produto: Jogo) => void;
+    adicionarProduto: (produto: Jogo, quant: number) => boolean;
     quantTotal: () => number;
     cart: CartItem[];
     adicionarProdutoFila: (produto: Jogo) => void;
