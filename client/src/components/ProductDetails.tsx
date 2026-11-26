@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight, faDolly, faShieldHalved } from '@fortawesome/free-solid-svg-icons';
+import { faDolly, faShieldHalved } from '@fortawesome/free-solid-svg-icons';
 import '../styles/ProductDetails.css';
 import type { Jogo } from '@/commons/types';
 
@@ -14,22 +14,7 @@ export function ProductDetails({produto}: ProductDetailsProps) {
         <div className="product-details-container">
             <div className="product-gallery-panel">
                 <div className="main-image-frame">
-                    <img src={`/${imagem}`} alt={`Capa do jogo ${nome}`} className="main-image" />
-                </div>
-
-                <div className="thumbnail-gallery">
-                    <button type="button" className="nav-arrow" aria-label="Imagem anterior">
-                        <FontAwesomeIcon icon={faChevronLeft} />
-                    </button>
-                    <img src={`/${produto.imagem}`} alt="Miniatura 1" className="thumb thumb-active" />
-                    <img src="/Jogo 2.webp" alt="Miniatura 2" className="thumb thumb-muted" />
-                    <img src="/Jogo 3.webp" alt="Miniatura 3" className="thumb thumb-muted" />
-                    <img src="/Jogo 4.webp" alt="Miniatura 4" className="thumb thumb-muted" />
-
-                    <div className="thumb more-photos-circle">+5</div>
-                    <button type="button" className="nav-arrow" aria-label="Próxima imagem">
-                        <FontAwesomeIcon icon={faChevronRight} />
-                    </button>
+                    <img src={imagem} alt={`Capa do jogo ${nome}`} className="main-image" />
                 </div>
             </div>
 
@@ -46,15 +31,19 @@ export function ProductDetails({produto}: ProductDetailsProps) {
 
                 <h2 className="section-title">Especificações</h2>
                 <ul className="specs-list">
-                    <li><span>Classificação Indicativa:</span> {classificacao} anos</li>
+                    <li><span>Classificação Indicativa:</span> {classificacao}</li>
                     <li><span>Data de lançamento:</span> {data}</li>
-                    <li><span>Modo de jogo:</span> {modo}</li>
+                    {modo && <li><span>Modo de jogo:</span> {modo}</li>}
                 </ul>
 
-                <h2 className="section-title">Tags</h2>
-                <div className="tags-container">
-                    {tags.map((t)=>(<span key={t} className="tag-category">{t}</span>))}
-                </div>
+                {tags && tags.length > 0 && (
+                    <>
+                        <h2 className="section-title">Tags</h2>
+                        <div className="tags-container">
+                            {tags.map((t)=>(<span key={t} className="tag-category">{t}</span>))}
+                        </div>
+                    </>
+                )}
 
                 <div className="guarantees-container">
                     <div className="guarantee-item">

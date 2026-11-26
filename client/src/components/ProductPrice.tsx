@@ -13,6 +13,7 @@ export function ProductPrice({produto, adicionarProduto}: ProductPriceProps) {
     const [quant, setQuant] = useState(1);
     const { preco, desconto = 0 } = produto;
     const precoFinal = preco - preco * (desconto / 100);
+    const esgotado = produto.status === "Esgotado";
 
     return (
         <div className="product-price-container">
@@ -36,10 +37,12 @@ export function ProductPrice({produto, adicionarProduto}: ProductPriceProps) {
                         </div>
                     </div>
                     <div className="delivery-status">Chegará sábado</div>
-                    <div className="stock-info">Estoque disponível</div>
+                    <div className="stock-info">{esgotado ? "Produto esgotado" : "Estoque disponível"}</div>
                 </div>
 
-                <button className="add-to-cart-button" onClick={()=>adicionarProduto(produto, quant)}>Adicionar ao carrinho</button>
+                <button className="add-to-cart-button" disabled={esgotado} onClick={()=>adicionarProduto(produto, quant)}>
+                    {esgotado ? "Esgotado" : "Adicionar ao carrinho"}
+                </button>
             </section>
 
             <section className="rating-card">
