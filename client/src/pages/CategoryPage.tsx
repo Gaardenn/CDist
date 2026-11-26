@@ -1,63 +1,47 @@
 import { useParams, Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-import { GameCard } from "../components/GameCard";
-import { useProducts } from "../hooks/useProducts";
-import "../styles/CategoryPage.css";
 import { Loader } from "../components/Loader";
 import { ErrorState } from "../components/ErrorState";
-import type { Jogo, CartItem } from "@/commons/types";
+import { ProductGrid } from "../components/ProductGrid";
+import { Pagination } from "../components/Pagination";
+import { useCategorias } from "../hooks/useCategorias";
+import { useProducts } from "../hooks/useProducts";
+import { usePaginaUrl } from "../hooks/usePaginaUrl";
+import "../styles/CategoryPage.css";
+import type { CartItem } from "@/commons/types";
 
 type CategoryPageProps = {
     quantTotal: () => number;
     cart: CartItem[];
 };
 
-type Categoria = {
-    titulo: string;
-    subtitulo: string;
-    logo: string;
-    classe: string;
-    filtro: (p: Jogo) => boolean;
-};
-
-const CATEGORIAS: Record<string, Categoria> = {
-    playstation: {
-        titulo: "PlayStation",
-        subtitulo: "Console Sony, do PS1 ao PS5",
-        logo: "/Img-Sony-PlayStation-PNG-Image 1.webp",
-        classe: "playstation",
-        filtro: (p) => p.plataforma.toLowerCase().includes("playstation") && !(p.tags || []).includes("Retro"),
-    },
-    xbox: {
-        titulo: "Xbox",
-        subtitulo: "Console Microsoft, do 360 ao Series X",
-        logo: "/Img-Xbox.webp",
-        classe: "xbox",
-        filtro: (p) => p.plataforma.toLowerCase().includes("xbox"),
-    },
-    nintendo: {
-        titulo: "Nintendo",
-        subtitulo: "Switch, Wii U e a nostalgia Nintendo",
-        logo: "/5bbc07b9af4bb-5135506e4e5927d3c9fc6b95a3322b97 1.webp",
-        classe: "nintendo",
-        filtro: (p) => p.plataforma.toLowerCase().includes("nintendo") && !(p.tags || []).includes("Retro"),
-    },
-    retro: {
-        titulo: "Retro",
-        subtitulo: "Clássicos que marcaram época",
-        logo: "/563-5632966_sega-konsolen-liste-sega-mega-drive-classic-hd-Photoroom 1.webp",
-        classe: "retro",
-        filtro: (p) => (p.tags || []).includes("Retro"),
-    },
+// Só o visual fica aqui. As outras informações vêm da API (GET /categorias)
+const CLASSES_VISUAIS: Record<string, string> = {
+    playstation: "playstation",
+    xbox: "xbox",
+    nintendo: "nintendo",
+    sega: "retro",
 };
 
 export function CategoryPage({ quantTotal, cart }: CategoryPageProps) {
     const { slug } = useParams<{ slug: string }>();
-    const { products, loading, error, retry } = useProducts();
-    const categoria = slug ? CATEGORIAS[slug] : undefined;
+    const { pagina, irParaPagina } = usePaginaUrl();
+    const { categorias, loading: carregandoCategorias, error: erroCategorias, retry: retryCategorias } = useCategorias();
 
-    if (loading) {
+    const categoria = categorias.find((c) => c.slug === slug);
+    const { products, pageInfo, loading, error, retry } = useProducts({
+        categoriaId: categoria?.id,
+        page: pagina,
+        enabled: !!categoria,
+    });
+
+    function trocarPagina(novaPagina: number): void {
+        irParaPagina(novaPagina); // o slug continua na URL, o filtro continua
+        document.getElementById("catalogo-categoria")?.scrollIntoView({ behavior: "smooth" });
+    }
+
+    if (carregandoCategorias) {
         return (
             <div className="page">
                 <Navbar quantTotal={quantTotal} cart={cart} />
@@ -67,11 +51,11 @@ export function CategoryPage({ quantTotal, cart }: CategoryPageProps) {
         );
     }
 
-    if (error) {
+    if (erroCategorias) {
         return (
             <div className="page">
                 <Navbar quantTotal={quantTotal} cart={cart} />
-                <ErrorState mensagem={error} onRetry={retry} />
+                <ErrorState mensagem={erroCategorias} onRetry={retryCategorias} />
                 <Footer />
             </div>
         );
@@ -90,37 +74,42 @@ export function CategoryPage({ quantTotal, cart }: CategoryPageProps) {
         );
     }
 
-    const jogosFiltrados = products.filter(categoria.filtro);
+    const classe = CLASSES_VISUAIS[categoria.slug] ?? "retro";
 
     return (
         <div className="page">
             <Navbar quantTotal={quantTotal} cart={cart} />
 
-            <section className={`category-banner category-banner-${categoria.classe}`}>
+            <section className={`category-banner category-banner-${classe}`}>
                 <div className="category-banner-content">
-                    <img src={categoria.logo} alt={categoria.titulo} className="category-banner-logo" />
+                    <img src={categoria.imagem} alt={categoria.nome} className="category-banner-logo" />
                     <div className="category-banner-text">
-                        <h1 className="category-banner-title">{categoria.titulo}</h1>
-                        <p className="category-banner-subtitle">{categoria.subtitulo}</p>
+                        <h1 className="category-banner-title">{categoria.nome}</h1>
+                        <p className="category-banner-subtitle">{categoria.descricao}</p>
                     </div>
                 </div>
             </section>
 
-            <section className="category-catalogo">
+            <section id="catalogo-categoria" className="category-catalogo">
                 <div className="category-catalogo-container">
-                    {jogosFiltrados.length > 0 ? (
-                        <div className="category-catalogo-grid">
-                            {jogosFiltrados.map((p) => (
-                                <GameCard key={p.id} jogo={p} />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="category-empty">
-                            <p>Ainda não temos jogos nessa categoria.</p>
-                            <Link to="/#catalogo" className={`category-empty-button category-empty-button-${categoria.classe}`}>
-                                Ver catálogo completo
-                            </Link>
-                        </div>
+                    <ProductGrid
+                        products={products}
+                        loading={loading}
+                        error={error}
+                        retry={retry}
+                        classeGrade="category-catalogo-grid"
+                        mensagemCarregando="Carregando jogos..."
+                        vazio={
+                            <div className="category-empty">
+                                <p>Ainda não temos jogos nessa categoria.</p>
+                                <Link to="/#catalogo" className={`category-empty-button category-empty-button-${classe}`}>
+                                    Ver catálogo completo
+                                </Link>
+                            </div>
+                        }
+                    />
+                    {pageInfo && !error && (
+                        <Pagination paginaAtual={pagina} totalPaginas={pageInfo.totalPages} onChange={trocarPagina} />
                     )}
                 </div>
             </section>

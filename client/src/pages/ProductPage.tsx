@@ -4,7 +4,7 @@ import { ProductPrice } from '../components/ProductPrice';
 import '../styles/ProductPage.css';
 import Footer from "../components/Footer"
 import Navbar from "../components/Navbar"
-import { useProducts } from '../hooks/useProducts';
+import { useProduct} from '../hooks/useProduct';
 import { useParams } from 'react-router-dom';
 import { Loader } from '../components/Loader';
 import { ErrorState } from '../components/ErrorState';
@@ -19,9 +19,7 @@ type ProductPageProps = {
 
 export function ProductPage({adicionarProduto, quantTotal, cart, adicionarProdutoFila}: ProductPageProps) {
     const { id } = useParams<{ id: string }>();
-    const { products, error, retry } = useProducts();
-
-    const produto = products.find((p) => p.id === Number(id));
+    const { produto, loading, error, naoEncontrado, retry } = useProduct(id);
 
     useEffect(() => {
         if (produto) {
@@ -29,7 +27,7 @@ export function ProductPage({adicionarProduto, quantTotal, cart, adicionarProdut
         }
     }, [produto]);
 
-    if (products.length === 0) {
+    if (loading) {
         return (
             <>
                 <Navbar quantTotal={quantTotal} cart={cart} />
@@ -43,13 +41,13 @@ export function ProductPage({adicionarProduto, quantTotal, cart, adicionarProdut
         return (
             <>
                 <Navbar quantTotal={quantTotal} cart={cart} />
-                <ErrorState mensagem={error} onRetry={retry} />
+                <ErrorState mensagem="Produto não encontrado." />
                 <Footer />
             </>
-        );
+        )
     }
 
-    if (!produto) {
+    if (naoEncontrado || !produto) {
         return (
             <>
                 <Navbar quantTotal={quantTotal} cart={cart} />
@@ -72,7 +70,6 @@ export function ProductPage({adicionarProduto, quantTotal, cart, adicionarProdut
                     </aside>
                 </div>
             </div>
-            <Footer />
         </>
-    );
+    )
 }

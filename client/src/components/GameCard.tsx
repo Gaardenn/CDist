@@ -12,8 +12,6 @@ export function GameCard({ jogo }: GameCardProps) {
     const desconto = jogo.desconto ?? 0;
     const precoFinal = jogo.preco - jogo.preco * (desconto / 100);
 
-    const imagemSrc = jogo.imagem?.startsWith("/") ? jogo.imagem : `/${jogo.imagem || ""}`;
-
     let plataformaClass = "default";
     const plataformaLower = (jogo.plataforma || "").toLowerCase();
     if (plataformaLower.includes("playstation")) plataformaClass = "playstation";
@@ -28,10 +26,10 @@ export function GameCard({ jogo }: GameCardProps) {
                     {jogo.plataforma}
                 </div>
                 <div className="game-card-image-container">
-                    <img src={imagemSrc} alt={jogo.nome} className="game-card-image" loading="lazy" />
+                    <img src={jogo.imagem} alt={jogo.nome} className="game-card-image" loading="lazy" />
                 </div>
                 <div className="game-card-info">
-                    <div className="game-card-platform-badge">{(jogo.tags && jogo.tags[0]) || jogo.plataforma}</div>
+                    {jogo.tags?.[0] && <div className="game-card-platform-badge">{jogo.tags[0]}</div>}
                     <h4 className="game-card-title">{jogo.nome}</h4>
 
                     <div className="game-card-pricing">

@@ -14,14 +14,13 @@ type NavbarProps = {
 export default function Navbar({ quantTotal, cart }: NavbarProps) {
     const [quant, setQuant] = useState(() => quantTotal());
     const [termo, setTermo] = useState("");
-    const { products } = useProducts();
+    const termoLimpo = termo.trim().toLowerCase();
+    const { products, loading: buscando } = useProducts({ size: 100, enabled: termoLimpo !== "" });
     const navigate = useNavigate();
 
     useEffect(() => {
         setQuant(quantTotal())
     }, [cart]);
-
-    const termoLimpo = termo.trim().toLowerCase();
 
     const resultados = termoLimpo === ""
         ? []
@@ -72,13 +71,15 @@ export default function Navbar({ quantTotal, cart }: NavbarProps) {
                                     className="navbar-search-item"
                                     onClick={() => irParaProduto(p.id)}
                                 >
-                                    <img src={`/${p.imagem}`} alt={p.nome} className="navbar-search-item-img" />
+                                    <img src={p.imagem} alt={p.nome} className="navbar-search-item-img" />
                                     <div className="navbar-search-item-info">
                                         <span className="navbar-search-item-nome">{p.nome}</span>
                                         <span className="navbar-search-item-plataforma">{p.plataforma}</span>
                                     </div>
                                 </div>
                             ))
+                        ) : buscando ? (
+                            <div className="navbar-search-empty">Buscando...</div>
                         ) : (
                             <div className="navbar-search-empty">Nenhum jogo encontrado para "{termo}"</div>
                         )}
