@@ -58,7 +58,7 @@ export function produtoResumoParaJogo(dto: ProdutoResumoDTO): Jogo {
 }
 
 /** GET /produtos/{id} */
-export function produtoDetalhesParaJogo(dto: ProdutoDetalheDTO): Jogo {
+export function produtoDetalheParaJogo(dto: ProdutoDetalheDTO): Jogo {
     return {
         id: dto.id,
         nome: dto.nome,

@@ -1,5 +1,7 @@
+import { useEffect, useState } from 'react';
 import type { Jogo } from '@/commons/types';
-import { useProducts } from '../hooks/useProducts';
+import ProdutoService from '@/services/produto-service';
+import { produtoDetalheParaJogo } from '@/utils/produtoAdapter';
 import '../styles/UltimosAcessados.css';
 import { GameCard } from './GameCard';
 
@@ -8,13 +10,23 @@ type UltimosAcessadosProps = {
 }
 
 export function UltimosAcessados({ queue = [] }: UltimosAcessadosProps) {
-    const {getProduct} = useProducts();
+    const [produtos, setProdutos] = useState<Jogo[]>([]);
+    const chave = queue.join(",");
 
-    const produtos = queue
-        .slice()
-        .reverse()
-        .map((id) => getProduct(id))
-        .filter((p): p is Jogo => p !== undefined);
+    useEffect(() => {
+        let cancelado = false;
+        const ids = chave ? chave.split(",").map(Number) : [];
+
+        Promise.all(ids.map((id) => ProdutoService.buscarPorId(id))).then((respostas) => {
+            if (cancelado) return;
+            const lista = respostas
+                .filter((r) => r.success && r.data)
+                .map((r) => produtoDetalheParaJogo(r.data!));
+            setProdutos(lista.reverse()); // pra deixar o mais recente primeiro
+        });
+
+        return () => { cancelado = true; };
+    }, [chave]);
 
     if (produtos.length === 0) {
         return null;
