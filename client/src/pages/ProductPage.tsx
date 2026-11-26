@@ -47,6 +47,16 @@ export function ProductPage({adicionarProduto, quantTotal, cart, adicionarProdut
         )
     }
 
+    if (naoEncontrado || !produto) {
+        return (
+            <>
+                <Navbar quantTotal={quantTotal} cart={cart} />
+                <ErrorState mensagem="Produto não encontrado." />
+                <Footer />
+            </>
+        )
+    }
+
     return (
         <>
             <Navbar quantTotal={quantTotal} cart={cart} />
