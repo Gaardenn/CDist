@@ -87,7 +87,7 @@ class FreteControllerTest {
         when(cepService.buscar("99999999")).thenThrow(new CepNaoEncontradoException());
 
         cotar("""
-                {"cepDestion": "99999999", "itensFisicos": 1}
+                {"cepDestino": "99999999", "itensFisicos": 1}
                 """)
                 .andExpect(status().isNotFound());
     }
