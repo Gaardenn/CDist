@@ -29,24 +29,24 @@ class CepControllerTest {
 
     @Test
     void buscar_cepValido_retorna200() throws Exception {
-        when(viaCepClient.buscar("85501000")).thenReturn(Optional.of(
-                new CepResponse("85501000", "Rua Caramuru", "Centro", "Pato Branco", "PR")));
+        when(viaCepClient.buscar("01001000")).thenReturn(Optional.of(
+                new CepResponse("01001000", "Praça da Sé", "Sé", "São Paulo", "SP")));
 
-        mockMvc.perform(get("/cep/85501000"))
+        mockMvc.perform(get("/cep/01001000"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.cep").value("85501000"))
-                .andExpect(jsonPath("$.logradouro").value("Rua Caramuru"))
-                .andExpect(jsonPath("$.bairro").value("Centro"))
-                .andExpect(jsonPath("$.cidade").value("Pato Branco"))
-                .andExpect(jsonPath("$.estado").value("PR"));
+                .andExpect(jsonPath("$.cep").value("01001000"))
+                .andExpect(jsonPath("$.logradouro").value("Praça da Sé"))
+                .andExpect(jsonPath("$.bairro").value("Sé"))
+                .andExpect(jsonPath("$.cidade").value("São Paulo"))
+                .andExpect(jsonPath("$.estado").value("SP"));
     }
 
     @Test
     void buscar_cepComHifen_retorna200() throws Exception {
-        when(viaCepClient.buscar("85501000")).thenReturn(Optional.of(
-                new CepResponse("85501000", "Rua Caramuru", "Centro", "Pato Branco", "PR")));
+        when(viaCepClient.buscar("01001000")).thenReturn(Optional.of(
+                new CepResponse("01001000", "Praça da Sé", "Sé", "São Paulo", "SP")));
 
-        mockMvc.perform(get("/cep/85501-000"))
+        mockMvc.perform(get("/cep/01001-000"))
                 .andExpect(status().isOk());
     }
 
@@ -73,10 +73,10 @@ class CepControllerTest {
 
     @Test
     void buscar_viaCepForaDoAr_retorna502() throws Exception {
-        when(viaCepClient.buscar("85501000"))
+        when(viaCepClient.buscar("01001000"))
                 .thenThrow(new ServicoCepIndisponivelException("Serviço de consulta de CEP indisponível"));
 
-        mockMvc.perform(get("/cep/85501000"))
+        mockMvc.perform(get("/cep/01001000"))
                 .andExpect(status().isBadGateway());
     }
 }

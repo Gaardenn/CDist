@@ -35,7 +35,7 @@ class FreteControllerTest {
     @Test
     void cotar_semItensFisicos_retornaFreteZero() throws Exception {
         cotar("""
-                {"cepDestino": "85501000", "itensFisicos": 0}
+                {"cepDestino": "01001000", "itensFisicos": 0}
                 """)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.valor").value(0.0))
@@ -45,16 +45,16 @@ class FreteControllerTest {
 
     @Test
     void cotar_itensFisicos_retornaValorPrazoERegiao() throws Exception {
-        when(cepService.buscar("85501000"))
-                .thenReturn(new CepResponse("85501000", "Rua Caramuru", "Centro", "Pato Branco", "PR"));
+        when(cepService.buscar("01001000"))
+                .thenReturn(new CepResponse("01001000", "Praça da Sé", "Sé", "São Paulo", "SP"));
 
         cotar("""
-                {"cepDestino": "85501000", "itensFisicos": 3}
+                {"cepDestino": "01001000", "itensFisicos": 3}
                 """)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.valor").value(18.0))
-                .andExpect(jsonPath("$.prazoDias").value(3))
-                .andExpect(jsonPath("$.regiao").value("Sul"));
+                .andExpect(jsonPath("$.valor").value(26.0))
+                .andExpect(jsonPath("$.prazoDias").value(5))
+                .andExpect(jsonPath("$.regiao").value("Sudeste"));
     }
 
     @Test
@@ -68,7 +68,7 @@ class FreteControllerTest {
     @Test
     void cotar_quantidadeNegativa_retorna400() throws Exception {
         cotar("""
-                {"cepDestino": "85501000", "itensFisicos": -1}
+                {"cepDestino": "01001000", "itensFisicos": -1}
                 """)
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.validationErrors.itensFisicos").exists());

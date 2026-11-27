@@ -21,7 +21,7 @@ class FreteServiceTest {
 
     @Test
     void cotar_semItensFisicos_devolveZeroSemConsultarCep() {
-        CotacaoResponse cotacao = freteService.cotar("85501000", 0);
+        CotacaoResponse cotacao = freteService.cotar("01001000", 0);
 
         assertThat(cotacao.valor()).isEqualByComparingTo("0");
         assertThat(cotacao.prazoDias()).isZero();

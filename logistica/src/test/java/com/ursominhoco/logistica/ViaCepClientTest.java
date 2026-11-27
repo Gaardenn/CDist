@@ -32,20 +32,20 @@ class ViaCepClientTest {
 
     @Test
     void buscar_cepExistente_devolveEndereco() {
-        servidor.expect(requestTo("http://viacep.test/ws/85501000/json/"))
+        servidor.expect(requestTo("http://viacep.test/ws/01001000/json/"))
                 .andRespond(withSuccess("""
-                        {"cep":"85501-000","logradouro":"Rua Caramuru","complemento":"","bairro":"Centro",
-                         "localidade":"Pato Branco","uf":"PR","ibge":"4118501"}
+                        {"cep":"01001-000","logradouro":"Praça da Sé","complemento":"","bairro":"Sé",
+                         "localidade":"São Paulo","uf":"SP","ibge":"3550308"}
                         """, MediaType.APPLICATION_JSON));
 
-        Optional<CepResponse> resposta = cliente.buscar("85501000");
+        Optional<CepResponse> resposta = cliente.buscar("01001000");
 
         assertThat(resposta).hasValueSatisfying(endereco -> {
-            assertThat(endereco.cep()).isEqualTo("85501000");
-            assertThat(endereco.logradouro()).isEqualTo("Rua Caramuru");
-            assertThat(endereco.bairro()).isEqualTo("Centro");
-            assertThat(endereco.cidade()).isEqualTo("Pato Branco");
-            assertThat(endereco.estado()).isEqualTo("PR");
+            assertThat(endereco.cep()).isEqualTo("01001000");
+            assertThat(endereco.logradouro()).isEqualTo("Praça da Sé");
+            assertThat(endereco.bairro()).isEqualTo("Sé");
+            assertThat(endereco.cidade()).isEqualTo("São Paulo");
+            assertThat(endereco.estado()).isEqualTo("SP");
         });
         servidor.verify();
     }
@@ -68,21 +68,21 @@ class ViaCepClientTest {
 
     @Test
     void buscar_viaCepComErro500_lancaServicoIndisponivel() {
-        servidor.expect(requestTo("http://viacep.test/ws/85501000/json/"))
+        servidor.expect(requestTo("http://viacep.test/ws/01001000/json/"))
                 .andRespond(withServerError());
 
-        assertThatThrownBy(() -> cliente.buscar("85501000"))
+        assertThatThrownBy(() -> cliente.buscar("01001000"))
                 .isInstanceOf(ServicoCepIndisponivelException.class);
     }
 
     @Test
     void buscar_timeout_lancaServicoIndisponivel() {
-        servidor.expect(requestTo("http://viacep.test/ws/85501000/json/"))
+        servidor.expect(requestTo("http://viacep.test/ws/01001000/json/"))
                 .andRespond(request -> {
                     throw new SocketTimeoutException("Read timed out");
                 });
 
-        assertThatThrownBy(() -> cliente.buscar("85501000"))
+        assertThatThrownBy(() -> cliente.buscar("01001000"))
                 .isInstanceOf(ServicoCepIndisponivelException.class);
     }
 }

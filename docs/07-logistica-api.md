@@ -18,20 +18,20 @@ Serviço separado da API principal. Consulta CEP (pelo ViaCEP) e faz cotação d
 
 ### GET /cep/{cep}
 
-- Pode ser `85501000` ou `85501-000`
+- Pode ser `01001000` ou `01001-000`
 - A resposta devolve o CEP apenas com dígitos
 - A consulta ao ViaCEP tem timeout de 2 segundos
-- Exemplo de chamada: `/cep/85501000`
+- Exemplo de chamada: `/cep/01001000`
 
 #### Response (200)
 
 ```JSON
 {
-    "cep": "85501000",
-    "logradouro": "Rua Caramuru",
-    "bairro": "Centro",
-    "cidade": "Pato Branco",
-    "estado": "PR"
+    "cep": "01001000",
+    "logradouro": "Praça da Sé",
+    "bairro": "Sé",
+    "cidade": "São Paulo",
+    "estado": "SP"
 }
 ```
 
@@ -68,7 +68,7 @@ Obs: CEPs de cidades pequenas podem vir com `logradouro` e `bairro` vazios (`""`
     "timestamp": 1792000000000,
     "status": 502,
     "message": "Serviço de consulta de CEP indisponível",
-    "url": "/cep/85501000",
+    "url": "/cep/01001000",
     "validationErrors": null
 }
 ```
@@ -79,7 +79,7 @@ Obs: CEPs de cidades pequenas podem vir com `logradouro` e `bairro` vazios (`""`
 
 ```JSON
 {
-    "cepDestino": "85501000",
+    "cepDestino": "01001000",
     "itensFisicos": 3
 }
 ```
@@ -93,9 +93,9 @@ Obs: CEPs de cidades pequenas podem vir com `logradouro` e `bairro` vazios (`""`
 
 ```JSON
 {
-    "valor": 18.00,
-    "prazoDias": 3,
-    "regiao": "Sul"
+    "valor": 26.00,
+    "prazoDias": 6,
+    "regiao": "Sudeste"
 }
 ```
 
@@ -129,7 +129,7 @@ Os erros 404 e 502 têm o mesmo formato do `GET /cep/{cep}`
 
 ## Regras de cálculo
 
-`valor = base + adiciona * (itensFisicos - 1)`, sempre com 2 casas decimais
+`valor = base + adicional * (itensFisicos - 1)`, sempre com 2 casas decimais
 
 A região vem da UF que vem da resposta do ViaCEP. A origem da loja é Pato Branco
 
@@ -141,7 +141,7 @@ A região vem da UF que vem da resposta do ViaCEP. A origem da loja é Pato Bran
 | Nordeste | BA, SE, AL, PE, PB, RN, CE, PI, MA | R$ 30,00 | R$ 6,00 | 9 dias |
 | Norte | AC, AM, AP, PA, RO, RR, TO | R$ 36,00 | R$ 7,00 | 12 dias |
 
-Exemplos: e itens no Sul = 12 + 3x2 = R$ 18,00. 5 itens no Norte = 36 + 7x4 = R$ 64,00
+Exemplos: 3 itens no Sul = 12 + 3x2 = R$ 18,00. 5 itens no Norte = 36 + 7x4 = R$ 64,00
 
 - RN01: item digital não paga frete. Pedido só com itens digitais tem `valor` 0, `prazoDias` 0 e `regiao` `null`
 - O valor oficial do frete é gravado pela API principal quando cria o pedido (RN03). Esta cotação serve para exibir no cliente
