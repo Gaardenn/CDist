@@ -90,4 +90,12 @@ public class ExceptionHandlerAdvice {
     public ApiError handlerLogisticaIndisponivel(LogisticaIndisponivelException exception, HttpServletRequest request) {
         return new ApiError(HttpStatus.SERVICE_UNAVAILABLE.value(), exception.getMessage(), request.getServletPath());
     }
+
+    // 409 (estoque)
+
+    @ExceptionHandler({EstoqueInsuficienteException.class})
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiError handlerEstoqueInsuficiente(EstoqueInsuficienteException exception, HttpServletRequest request) {
+        return new ApiError(HttpStatus.CONFLICT.value(), exception.getMessage(), request.getServletPath());
+    }
 }

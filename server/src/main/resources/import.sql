@@ -44,3 +44,6 @@ INSERT INTO usuario (id, nome, email, senha) VALUES (2, "Matheus Mohr", "matheus
 INSERT INTO endereco (id, usuario_id, cep, logradouro, numero, complemento, bairro, cidade, estado) VALUES (1, 1, "85580001", "Rua Presidente Vargas", "348", "Casa", "Centro", "Itapejara D'Oeste", "PR");
 INSERT INTO endereco (id, usuario_id, cep, logradouro, numero, complemento, bairro, cidade, estado) VALUES (2, 2, "85501060", "Rua Caramuru", "167", "Apartamento", "Centro", "Pato Branco", "PR");
 INSERT INTO endereco (id, usuario_id, cep, logradouro, numero, complemento, bairro, cidade, estado) VALUES (3, 2, "80020290", "Rua Presidente Faria", "141", "Casa", "Centro", "Curitiba", "PR");
+
+-- Estoque de teste: 10 unidades, exceto o God of War (1 unidade) e o Halo 3 (esgotado), para poder testar o 409
+UPDATE produto SET estoque = 10 WHERE id NOT IN (1, 2);
