@@ -1,5 +1,3 @@
-// RASCUNHO
-
 /** GET /cep/{cep} */
 export interface CepResponseDTO {
     cep: string;
@@ -11,12 +9,12 @@ export interface CepResponseDTO {
 
 /** POST /frete/cotacao */
 export interface CotacaoFreteRequestDTO {
-    cep: string;
-    quantidadeItensFisicos: number;
+    cepDestino: string;
+    itensFisicos: number;  // soma das quantidades dos itens de mídia física
 }
 
 export interface CotacaoFreteResponseDTO {
-    regiao: string;
     valor: number;
     prazoDias: number;
+    regiao: string | null;  // null quando não existe nenhum item físico
 }
