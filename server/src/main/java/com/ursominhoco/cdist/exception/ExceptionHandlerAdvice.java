@@ -74,4 +74,20 @@ public class ExceptionHandlerAdvice {
     public ApiError handlerNaoEncontrado(RecursoNaoEncontradoException exception, HttpServletRequest request) {
         return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
     }
+
+    // 400 (frete)
+
+    @ExceptionHandler({FreteNaoCalculavelException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handlerFreteNaoCalculavel(FreteNaoCalculavelException exception, HttpServletRequest request) {
+        return new ApiError(HttpStatus.BAD_REQUEST.value(), exception.getMessage(), request.getServletPath());
+    }
+
+    // 503
+
+    @ExceptionHandler({LogisticaIndisponivelException.class})
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
+    public ApiError handlerLogisticaIndisponivel(LogisticaIndisponivelException exception, HttpServletRequest request) {
+        return new ApiError(HttpStatus.SERVICE_UNAVAILABLE.value(), exception.getMessage(), request.getServletPath());
+    }
 }

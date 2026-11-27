@@ -14,7 +14,7 @@ const cotarFrete = (dados: CotacaoFreteRequestDTO): Promise<IResponse<CotacaoFre
   request(() => apiLogistica.post<CotacaoFreteResponseDTO>("/frete/cotacao", {
     ...dados,
     cepDestino: dados.cepDestino.replace(/\D/g, ""),
-  }), "Frete calculado!", " Não foi poss'ivel calcular o frete");
+  }), "Frete calculado!", " Não foi possível calcular o frete");
 
 const LogisticaService = { buscarCep, cotarFrete };
 export default LogisticaService;
