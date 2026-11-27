@@ -1,0 +1,27 @@
+name: Logística CI
+
+on:
+  push:
+    paths:
+      - "logistica/**"
+      - ".github/workflows/logistica-ci.yml"
+  pull_request:
+    paths:
+      - "logistica/**"
+      - ".github/workflows/logistica-ci.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: logistica
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "25"
+          cache: maven
+      - name: Compila e roda os testes
+        run: mvn -B verify
