@@ -20,7 +20,7 @@
         },
         {
             "key": "emailUsuario",
-            "value": "usuario@teste.com"
+            "value": "usuarioteste@teste.com"
         },
         {
             "key": "senhaUsuario",
@@ -399,7 +399,7 @@
                         },
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"cep\": \"85501000\",\n  \"logradouro\": \"Rua das Flores\",\n  \"numero\": \"123\",\n  \"complemento\": \"Apto 4\",\n  \"bairro\": \"Centro\",\n  \"cidade\": \"Pato Branco\",\n  \"estado\": \"PR\"\n}",
+                            "raw": "{\n  \"cep\": \"85580001\",\n  \"logradouro\": \"Rua Presidente Vargas\",\n  \"numero\": \"348\",\n  \"complemento\": \"Apto 4\",\n  \"bairro\": \"Centro\",\n  \"cidade\": \"Itapejara d'Oeste\",\n  \"estado\": \"PR\"\n}",
                             "options": {
                                 "raw": {
                                     "language": "json"
@@ -792,7 +792,7 @@
                         "url": { "raw": "{{baseUrl}}/pedidos", "host": ["{{baseUrl}}"], "path": ["pedidos"] },
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n \"enderecoId\": {{enderecoId}},\n \"metodoPagamento\": \"PIX\",\n \"itens\": [\n    { \"produtoId\": 1, \"quantidade\": 2 }\n  ]\n",
+                            "raw": "{\n \"enderecoId\": {{enderecoId}},\n \"metodoPagamento\": \"PIX\",\n \"itens\": [\n    { \"produtoId\": 1, \"quantidade\": 2 }\n  ]\n}",
                             "options": { "raw": { "language": "json" } }
                         }
                     },
@@ -861,13 +861,13 @@
                     "name": "Buscar CEP",
                     "request": {
                         "method": "GET", "header": [],
-                        "url": { "raw": "{{logisticaUrl}}/cep/85501", "host": ["{{logisticaUrl}}"], "path": ["cep", "85501000"] },
+                        "url": { "raw": "{{logisticaUrl}}/cep/85501", "host": ["{{logisticaUrl}}"], "path": ["cep", "85580001"] },
                         "auth": { "type": "noauth" }
                     },
                     "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
                         "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
                         "const json = pm.response.json();",
-                        "pm.test(\"Cidade e UF\", () => { pm.expect(json.cidade).to.eql(\"Pato Branco\"); pm.expect(json.estado).to.eql(\"PR\"); });"
+                        "pm.test(\"Cidade e UF\", () => { pm.expect(json.cidade).to.eql(\"Itapejara d'Oeste\"); pm.expect(json.estado).to.eql(\"PR\"); });"
                     ] } }]
                 },
                 {
@@ -900,7 +900,7 @@
                         "url": { "raw": "{{logisticaUrl}}/frete/cotacao", "host": ["{{logisticaUrl}}"], "path": ["frete", "cotacao"] },
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"cepDestino\": \"85501000\",\n  \"itensFisicos\": 3\n}",
+                            "raw": "{\n  \"cepDestino\": \"85580001\",\n  \"itensFisicos\": 3\n}",
                             "options": { "raw": { "language": "json" } }
                         },
                         "auth": { "type": "noauth" }
@@ -912,14 +912,14 @@
                     ] } }]
                 },
                 {
-                    "name": "Cotar frete sem item físico (zerp)",
+                    "name": "Cotar frete sem item físico (zero)",
                     "request": {
                         "method": "POST",
                         "header": [{ "key": "Content-Type", "value": "application/json" }],
                         "url": { "raw": "{{logisticaUrl}}/frete/cotacao", "host": ["{{logisticaUrl}}"], "path": ["frete", "cotacao"] },
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"cepDestino\": \"85501000\",\n  \"itensFisicos\": 0\n}",
+                            "raw": "{\n  \"cepDestino\": \"85580001\",\n  \"itensFisicos\": 0\n}",
                             "options": { "raw": { "language": "json" } }
                         },
                         "auth": { "type": "noauth" }
@@ -938,7 +938,7 @@
                         "url": { "raw": "{{logisticaUrl}}/frete/cotacao", "host": ["{{logisticaUrl}}"], "path": ["frete", "cotacao"] },
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"cepDestino\": \"85501000\",\n  \"itensFisicos\": -1\n}",
+                            "raw": "{\n  \"cepDestino\": \"85580001\",\n  \"itensFisicos\": -1\n}",
                             "options": { "raw": { "language": "json" } }
                         },
                         "auth": { "type": "noauth" }
