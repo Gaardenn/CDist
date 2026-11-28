@@ -8,6 +8,8 @@
 - Uso do Lombok para reduzir código repetitivo (getters, setters e construtores).
 - Banco de dados H2 em memória, por dispensar instalação e configuração adicionais durante o desenvolvimento.
 - Título do Pull Request seguindo padrão de commits `tipo: descrição` (feat, fix, docs, test, chore, refactor).
+- Frete oficial: a API pede o frete para a logística (`logistica.url` no `application.properties`) ao criar o pedido e grava nele. Logística fora do ar ou lenta = 503 e o pedido não é criado. Pedido só com itens digitais nem chega a chamar a logística.
+- Estoque: baixado no `POST /pedidos` com `UPDATE ... WHERE estoque >= quantidade` (atômico), sem vender acima do estoque em pedidos feitos ao mesmo tempo. Se faltar estoque = 409 e o pedido inteiro é recusado (rollback).
 
 ## Definition of Done
 

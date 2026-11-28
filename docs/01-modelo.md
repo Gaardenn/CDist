@@ -132,7 +132,7 @@ Produto representa um jogo à venda na loja. O campo `preco` guarda o **preço c
 | descricao | String | Sim | Texto longo |
 | quantidadeAvaliacoes | int | Sim | Padrão 0 |
 | avaliacaoNotaUm ... avaliacaoNotaCinco | int | Sim | Padrão 0; quantidade de avaliações de cada nota (5 colunas) |
-| estoque | int | Sim | Quantidade do produto em estoque. É usado para calcular disponibilidade. 
+| estoque | int | Sim | Quantidade do produto em estoque. É usado para calcular disponibilidade.
 
 ### 3.3 Miniatura
 Imagens secundárias do produto, exibidas na página de detalhes. **Entra só se sobrar tempo** (não é consumida por endpoint obrigatório da entrega 1).
@@ -187,7 +187,7 @@ Compra finalizada por um usuário. Os campos de endereço (`cep` a `estado`) sã
 | bairro | String | Sim | Snapshot |
 | cidade | String | Sim | Snapshot |
 | estado | String | Sim | Snapshot, UF com 2 letras |
-| frete | BigDecimal | Sim | Padrão 0 (cálculo externo fica para a entrega final) |
+| frete | BigDecimal | Sim | Valor oficial vindo da API de logística no momento da compra. Zero se o pedido só tiver itens digitais |
 | total | BigDecimal | Sim | Calculado pelo servidor: soma dos itens com desconto + frete |
 
 ### 3.7 PedidoProduto

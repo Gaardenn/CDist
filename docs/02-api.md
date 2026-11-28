@@ -10,13 +10,13 @@ POST | `/usuarios/login` | público | 200 OK; 401 credenciais inválidas
 POST | `/enderecos` | privado | 201 criado; 400 dados inválidos
 GET | `/enderecos` | privado | 200 OK
 GET | `/enderecos/{id}` | privado | 200 OK; 404 não encontrado
-POST | `/pedidos` | privado | 201 criado; 400 dados inválidos
+POST | `/pedidos` | privado | 201 criado; 400 dados inválidos ou CEP sem cotação de frete; 404 endereço ou produto inexistente; 409 estoque insuficiente; 503 logística indisponível
 GET | `/pedidos` | privado | 200 OK
 GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
 
 ## Exemplos request e response
 
-### GET /categorias 
+### GET /categorias
 
 #### Response (200)
 
@@ -310,8 +310,51 @@ GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
             "subtotal": 699.98
         }
     ],
-    "frete": 0.00,
-    "total": 954.89
+    "frete": 10.00,
+    "total": 966.89
+}
+```
+
+#### Regras
+
+- O `frete` é pedido para a API de logística (`POST /frete/cotacao`) com o CEP do endereço escolhido e a soma das quantidades dos itens de mídia `FISICA`. O valor é gravado no pedido e o client não envia frete
+- Pedido só com itens digitais tem frete `0.00` e não chama a logística
+- O mesmo produto repetido em `itens` é somado em um item só
+- O estoque é validado e baixado na mesma transação do pedido. Se faltar estoque de qualquer item, o pedido inteiro é recusado e nada é baixado
+
+#### Response (409) - estoque insuficiente
+
+```JSON
+{
+    "timestamp": 1792000000000,
+    "status": 409,
+    "message": "Estoque insuficiente para \"God of War Ragnarök\": disponível 1, solicitado 2",
+    "url": "/pedidos",
+    "validationErrors": null
+}
+```
+
+#### Response (503) - logística fora do ar, lenta ou com erro
+
+```JSON
+{
+    "timestamp": 1792000000000,
+    "status": 503,
+    "message": "Serviço de logística indisponível",
+    "url": "/pedidos",
+    "validationErrors": null
+}
+```
+
+#### Response (400) - CEP do endereço sem cotação do frete
+
+```JSON
+{
+    "timestamp": 1792000000000,
+    "status": 400,
+    "message": "Não foi possível calcular o frete: o CEP do endereço é inválido ou não foi encontrado",
+    "url": "/pedidos",
+    "validationErrors": null
 }
 ```
 
