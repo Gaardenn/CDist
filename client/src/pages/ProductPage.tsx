@@ -41,7 +41,7 @@ export function ProductPage({adicionarProduto, quantTotal, cart, adicionarProdut
         return (
             <>
                 <Navbar quantTotal={quantTotal} cart={cart} />
-                <ErrorState mensagem="Produto não encontrado." />
+                <ErrorState mensagem="Produto não encontrado." onRetry={retry} />
                 <Footer />
             </>
         )
