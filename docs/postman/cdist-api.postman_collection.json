@@ -30,10 +30,7 @@
             "key": "token",
             "value": ""
         },
-        {
-            "key": "produtoId",
-            "value": "1"
-        },
+        { "key": "produtoId", "value": "6" },
         {
             "key": "enderecoId",
             "value": "1"
@@ -41,7 +38,8 @@
         {
             "key": "pedidoId",
             "value": "1"
-        }
+        },
+        { "key": "logisticaUrl", "value": "http://localhost:8081" }
     ],
     "item": [
         {
@@ -575,11 +573,14 @@
                             "listen": "test",
                             "script": {
                                 "type": "text/javascript",
-                                "exec": [
+                                "exec":
+                                [
                                     "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
                                     "const json = pm.response.json();",
                                     "if (json.id) pm.collectionVariables.set(\"pedidoId\", json.id);",
-                                    "pm.test(\"Pedido tem total\", () => pm.expect(json.total).to.exist);"
+                                    "pm.test(\"Pedido tem total\", () => pm.expect(json.total).to.exist);",
+                                    "pm.test(\"Frete veio da logística (Sul, 2 itens físicos)\", () => pm.expect(json.frete).to.eql(15));",
+                                    "pm.test(\"Total = itens + frete\", () => pm.expect(json.total).to.eql(414.98));"
                                 ]
                             }
                         }
@@ -782,6 +783,170 @@
                             }
                         }
                     ]
+                },
+                {
+                    "name": "Criar pedido com estoque insuficiente (409)",
+                    "request": {
+                        "method": "POST",
+                        "header": [{ "key": "Content-Type", "value": "application/json" }],
+                        "url": { "raw": "{{baseUrl}}/pedidos", "host": ["{{baseUrl}}"], "path": ["pedidos"] },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n \"enderecoId\": {{enderecoId}},\n \"metodoPagamento\": \"PIX\",\n \"itens\": [\n    { \"produtoId\": 1, \"quantidade\": 2 }\n  ]\n",
+                            "options": { "raw": { "language": "json" } }
+                        }
+                    },
+                    "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+                        "pm.test(\"Status 409\", () => pm.response.to.have.status(409));",
+                        "pm.test(\"Mensagem cita o estoque\", () => pm.expect(pm.response.json().message).to.include(\"Estoque insuficiente\"));"
+                    ] } }]
+                },
+                {
+                    "name": "Criar pedido com produto esgotado (409)",
+                    "request": {
+                        "method": "POST",
+                        "header": [{ "key": "Content-Type", "value": "application/json" }],
+                        "url": { "raw": "{{baseUrl}}/pedidos", "host": ["{{baseUrl}}"], "path": ["pedidos"] },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"enderecoId\": {{enderecoId}},\n  \"metodoPagamento\": \"PIX\",\n  \"itens\": [\n    { \"produtoId\": 2, \"quantidade\": 1 }\n  ]\n}",
+                            "options": { "raw": { "language": "json" } }
+                        }
+                    },
+                    "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+                        "pm.test(\"Status 409\", () => pm.response.to.have.status(409));"
+                    ] } }]
+                },
+                {
+                    "name": "Criar pedido só com item digital (frete zero)",
+                    "request": {
+                        "method": "POST",
+                        "header": [{ "key": "Content-Type", "value": "application/json" }],
+                        "url": { "raw": "{{baseUrl}}/pedidos", "host": ["{{baseUrl}}"], "path": ["pedidos"] },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"enderecoId\": {{enderecoId}},\n  \"metodoPagamento\": \"PIX\",\n  \"itens\": [\n    { \"produtoId\": 3, \"quantidade\": 1 }\n  ]\n}",
+                            "options": { "raw": { "language": "json" } }
+                        }
+                    },
+                    "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+                        "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+                        "const json = pm.response.json();",
+                        "pm.test(\"Frete zero\", () => pm.expect(json.frete).to.eql(0));",
+                        "pm.test(\"Total = preço do jogo\", () => pm.expect(json.total).to.eql(349.99));"
+                    ] } }]
+                },
+                {
+                    "name": "Criar pedido com logística fora do ar (503) - desligue a logística antes",
+                    "request": {
+                        "method": "POST",
+                        "header": [{ "key": "Content-Type", "value": "application/json" }],
+                        "url": { "raw": "{{baseUrl}}/pedidos", "host": ["{{baseUrl}}"], "path": ["pedidos"] },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"enderecoId\": {{enderecoId}},\n  \"metodoPagamento\": \"PIX\",\n  \"itens\": [\n    { \"produtoId\": 6, \"quantidade\": 1 }\n  ]\n}",
+                            "options": { "raw": { "language": "json" } }
+                        }
+                    },
+                    "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+                        "pm.test(\"Status 503\", () => pm.response.to.have.status(503));"
+                    ] } }]
+                }
+            ]
+        },
+        {
+            "name": "Logística",
+            "item": [
+                {
+                    "name": "Buscar CEP",
+                    "request": {
+                        "method": "GET", "header": [],
+                        "url": { "raw": "{{logisticaUrl}}/cep/85501", "host": ["{{logisticaUrl}}"], "path": ["cep", "85501000"] },
+                        "auth": { "type": "noauth" }
+                    },
+                    "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+                        "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                        "const json = pm.response.json();",
+                        "pm.test(\"Cidade e UF\", () => { pm.expect(json.cidade).to.eql(\"Pato Branco\"); pm.expect(json.estado).to.eql(\"PR\"); });"
+                    ] } }]
+                },
+                {
+                    "name": "Buscar CEP mal formado (400)",
+                    "request": {
+                        "method": "GET", "header": [],
+                        "url": { "raw": "{{logisticaUrl}}/cep/abc123", "host": ["{{logisticaUrl}}"], "path": ["cep", "abc123"] },
+                        "auth": { "type": "noauth" }
+                    },
+                    "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+                        "pm.test(\"Status 400\", () => pm.response.to.have.status(400));"
+                    ] } }]
+                },
+                {
+                    "name": "Buscar CEP inexistente (404)",
+                    "request": {
+                        "method": "GET", "header": [],
+                        "url": { "raw": "{{logisticaUrl}}/cep/99999999", "host": ["{{logisticaUrl}}"], "path": ["cep", "99999999"] },
+                        "auth": { "type": "noauth" }
+                    },
+                    "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+                        "pm.test(\"Status 404\", () => pm.response.to.have.status(404));"
+                    ] } }]
+                },
+                {
+                    "name": "Cotar frete",
+                    "request": {
+                        "method": "POST",
+                        "header": [{ "key": "Content-Type", "value": "application/json" }],
+                        "url": { "raw": "{{logisticaUrl}}/frete/cotacao", "host": ["{{logisticaUrl}}"], "path": ["frete", "cotacao"] },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"cepDestino\": \"85501000\",\n  \"itensFisicos\": 3\n}",
+                            "options": { "raw": { "language": "json" } }
+                        },
+                        "auth": { "type": "noauth" }
+                    },
+                    "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+                        "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                        "const json = pm.response.json();",
+                        "pm.test(\"Sul: 12 + 3 x 2 = 18, 3 dias\", () => { pm.expect(json.valor).to.eql(18); pm.expect(json.prazoDias).to.eql(3); pm.expect(json.regiao).to.eql(\"Sul\"); });"
+                    ] } }]
+                },
+                {
+                    "name": "Cotar frete sem item físico (zerp)",
+                    "request": {
+                        "method": "POST",
+                        "header": [{ "key": "Content-Type", "value": "application/json" }],
+                        "url": { "raw": "{{logisticaUrl}}/frete/cotacao", "host": ["{{logisticaUrl}}"], "path": ["frete", "cotacao"] },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"cepDestino\": \"85501000\",\n  \"itensFisicos\": 0\n}",
+                            "options": { "raw": { "language": "json" } }
+                        },
+                        "auth": { "type": "noauth" }
+                    },
+                    "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+                        "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                        "const json = pm.response.json();",
+                        "pm.test(\"Frete zero e sem região\", () => { pm.expect(json.valor).to.eql(0); pm.expect(json.prazoDias).to.eql(0); pm.expect(json.regiao).to.eql(null); });"
+                    ] } }]
+                },
+                {
+                    "name": "Cotar frete com dados inválidos (400)",
+                    "request": {
+                        "method": "POST",
+                        "header": [{ "key": "Content-Type", "value": "application/json" }],
+                        "url": { "raw": "{{logisticaUrl}}/frete/cotacao", "host": ["{{logisticaUrl}}"], "path": ["frete", "cotacao"] },
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"cepDestino\": \"85501000\",\n  \"itensFisicos\": -1\n}",
+                            "options": { "raw": { "language": "json" } }
+                        },
+                        "auth": { "type": "noauth" }
+                    },
+                    "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": [
+                        "pm.test(\"Status 400\", () => pm.response.to.have.status(400));",
+                        "pm.test(\"Erro no campo itensFisicos\", () => pm.expect(pm.response.json().validationErrors.itensFisicos).to.exist);"
+                    ] } }]
                 }
             ]
         }
