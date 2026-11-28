@@ -14,7 +14,7 @@ public class RestClientConfig {
 
     @Bean
     RestClient logisticaRestClient(@Value("${logistica.url}") String url,
-                                   @Value("${logistica.timeout") Duration timeoutLeitura) {
+                                   @Value("${logistica.timeout}") Duration timeoutLeitura) {
         HttpClient httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofSeconds(2))
                 .build();

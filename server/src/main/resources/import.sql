@@ -37,13 +37,13 @@ INSERT INTO produto (id, categoria_id, nome, plataforma, desenvolvedora, distrib
 INSERT INTO produto (id, categoria_id, nome, plataforma, desenvolvedora, distribuidora, midia, preco, desconto, estoque, imagem, classificacao, data_lancamento, descricao, quantidade_avaliacoes, avaliacao_nota_um, avaliacao_nota_dois, avaliacao_nota_tres, avaliacao_nota_quatro, avaliacao_nota_cinco) VALUES (30, 1, 'Castlevania: Symphony of the Night', 'PLAYSTATION_1', 'Konami Computer Entertainment Tokyo', 'Konami', 'FISICA', 219.90, 0.00, 1, 'https://lojavirtualcdist.vercel.app/Castlevania%20Symphony%20of%20the%20Night.webp', 'DOZE', '1997-03-20', 'Castlevania: Symphony of the Night coloca Alucard para explorar o castelo de Drácula em um mapa livre repleto de segredos, itens e evolução de personagem. É o título que batizou o gênero metroidvania.', 64, 2, 8, 9, 10, 35);
 
 -- Usuários
-INSERT INTO usuario (id, nome, email, senha) VALUES (1, "Bernardo Lucini", "bernardo@teste.com", "Umi1235!");
-INSERT INTO usuario (id, nome, email, senha) VALUES (2, "Matheus Mohr", "matheus@teste.com", "Teste#987");
+INSERT INTO usuario (id, nome, email, senha) VALUES (1, 'Bernardo Lucini', 'bernardo@teste.com', 'Umi1235!');
+INSERT INTO usuario (id, nome, email, senha) VALUES (2, 'Matheus Mohr', 'matheus@teste.com', 'Teste#987');
 
 -- Endereços
-INSERT INTO endereco (id, usuario_id, cep, logradouro, numero, complemento, bairro, cidade, estado) VALUES (1, 1, "85580001", "Rua Presidente Vargas", "348", "Casa", "Centro", "Itapejara D'Oeste", "PR");
-INSERT INTO endereco (id, usuario_id, cep, logradouro, numero, complemento, bairro, cidade, estado) VALUES (2, 2, "85501060", "Rua Caramuru", "167", "Apartamento", "Centro", "Pato Branco", "PR");
-INSERT INTO endereco (id, usuario_id, cep, logradouro, numero, complemento, bairro, cidade, estado) VALUES (3, 2, "80020290", "Rua Presidente Faria", "141", "Casa", "Centro", "Curitiba", "PR");
+INSERT INTO endereco (id, usuario_id, cep, logradouro, numero, complemento, bairro, cidade, estado) VALUES (1, 1, '85580001', 'Rua Presidente Vargas', '348', 'Casa', 'Centro', 'Itapejara D''Oeste', 'PR');
+INSERT INTO endereco (id, usuario_id, cep, logradouro, numero, complemento, bairro, cidade, estado) VALUES (2, 2, '85501060', 'Rua Caramuru', '167', 'Apartamento', 'Centro', 'Pato Branco', 'PR');
+INSERT INTO endereco (id, usuario_id, cep, logradouro, numero, complemento, bairro, cidade, estado) VALUES (3, 2, '80020290', 'Rua Presidente Faria', '141', 'Casa', 'Centro', 'Curitiba', 'PR');
 
 -- Estoque de teste: 10 unidades, exceto o God of War (1 unidade) e o Halo 3 (esgotado), para poder testar o 409
 UPDATE produto SET estoque = 10 WHERE id NOT IN (1, 2);
