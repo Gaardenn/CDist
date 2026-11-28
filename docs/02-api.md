@@ -1,5 +1,9 @@
 # Contrato da API
 
+> A API principal roda em `http://localhost:8080`. Consultas de CEP e o cálculo de frete ficam na API de logística em `http://localhost:8081`, com contrato próprio em [07-logistica-api.md](07-logistica-api.md).
+>
+> Rotas **privadas** exigem o header `Authorization: Bearer <token>`, com o token devolvido na resposta do `POST /usuarios/login`. Sem token, ou com token inválido, a resposta é `401`.
+
 Método | Rota | Acesso | Obs
 -|-|-|-
 GET | `/categorias` | público | 200 OK
@@ -11,8 +15,8 @@ POST | `/enderecos` | privado | 201 criado; 400 dados inválidos
 GET | `/enderecos` | privado | 200 OK
 GET | `/enderecos/{id}` | privado | 200 OK; 404 não encontrado
 POST | `/pedidos` | privado | 201 criado; 400 dados inválidos ou CEP sem cotação de frete; 404 endereço ou produto inexistente; 409 estoque insuficiente; 503 logística indisponível
-GET | `/pedidos` | privado | 200 OK
-GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
+GET | `/pedidos` | privado | 200 OK; do mais recente para o mais antigo; 401 sem token
+GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado ou de outro usuário; 401 sem token
 
 ## Exemplos request e response
 
@@ -360,6 +364,13 @@ GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
 
 ### GET /pedidos
 
+#### Regras
+
+- Devolve só os pedidos do usuário do token (RN07), do **mais recente para o mais antigo** (`data` decrescente)
+- Cada pedido já vem com os `itens` (produto, quantidade, preço e desconto da compra), o `frete` e o `total`
+- Usuário sem pedidos: `200` com lista vazia (`[]`)
+- Lista sem paginação
+
 #### Response (200)
 
 ```JSON
@@ -465,6 +476,10 @@ GET | `/pedidos/{id}` | privado | 200 OK; 404 não encontrado
 ```
 
 ### GET /pedidos/{id}
+
+#### Regras
+
+- `404` quando o pedido não existe ou pertence a outro usuário (RN07). A API não revela que o pedido existe
 
 #### Response (200)
 

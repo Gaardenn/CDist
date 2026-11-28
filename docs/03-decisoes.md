@@ -17,7 +17,7 @@ Uma tarefa só vai para "Feito" no Kanban quando:
 1. Compila e os testes passam (CI verde)
 2. Testado manualmente no Postman (caminho feliz + 1 erro esperado)
 3. PR aprovado pelo colega
-4. Endpoint documentado em docs/02-apli.md (rota, exemplo de request e response)
+4. Endpoint documentado em docs/02-api.md (rota, exemplo de request e response)
 
 ## Retrospectiva
 
