@@ -692,7 +692,19 @@
                             "script": {
                                 "type": "text/javascript",
                                 "exec": [
-                                    "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                                    "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                                    "const pedidos = pm.response.json();",
+                                    "pm.test(\"Devolve uma lista\", () => pm.expect(pedidos).to.be.an(\"array\"));",
+                                    "pm.test(\"Cada pedido tem itens, frete e total\", () => pedidos.forEach(p => {",
+                                    "  pm.expect(p.itens).to.be.an(\"array\").that.is.not.empty;",
+                                    "  pm.expect(p).to.have.property(\"frete\");",
+                                    "  pm.expect(p).to.have.property(\"total\");",
+                                    "}));",
+                                    "pm.test(\"Mais recentes primeiro\", () => {",
+                                    "  for (let i = 1; i < pedidos.length; i++) {",
+                                    "    pm.expect(new Date(pedidos[i -1].data).getTime()).to.be.at.least(new Date(pedidos[i].data).getTime());",
+                                    "  }",
+                                    "});"
                                 ]
                             }
                         }
@@ -750,7 +762,14 @@
                             "script": {
                                 "type": "text/javascript",
                                 "exec": [
-                                    "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                                    "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                                    "const pedido = pm.response.json();",
+                                    "pm.test(\"É o pedido pedido\", () => pm.expect(String(pedido.id)).to.eql(String(pm.collectionVariables.get(\"pedidoId\"))));",
+                                    "pm.test(\"Tem itens, frete e total\", () => {",
+                                    "  pm.expect(pedido.itens).to.be.an(\"array\").that.is.not.empty;",
+                                    "  pm.expect(pedido).to.have.property(\"frete\");",
+                                    "  pm.expect(pedido).to.have.property(\"total\");",
+                                    "});"
                                 ]
                             }
                         }
